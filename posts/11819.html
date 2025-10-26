@@ -1,0 +1,342 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>HCIP| IS-IS | Onism</title><meta name="author" content="Wang Han"><meta name="copyright" content="Wang Han"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="IS-IS核心知识NET【网络实体名称】  OSI协议栈中设备的网络层信息，主要用于路由计算。 一台设备至少有一个NET，也可以同时配置多个NET，但是这些NET的System ID必须相同。 Area ID： 由IDP和DSP中的High Order DSP组成，既能够标识路由域，也能够标识路由域中的区域。 包含：AFI、IDI、High Order DSP。 System ID： 用来在区域内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HCIP| IS-IS">
+<meta property="og:url" content="http://example.com/posts/11819.html">
+<meta property="og:site_name" content="Onism">
+<meta property="og:description" content="IS-IS核心知识NET【网络实体名称】  OSI协议栈中设备的网络层信息，主要用于路由计算。 一台设备至少有一个NET，也可以同时配置多个NET，但是这些NET的System ID必须相同。 Area ID： 由IDP和DSP中的High Order DSP组成，既能够标识路由域，也能够标识路由域中的区域。 包含：AFI、IDI、High Order DSP。 System ID： 用来在区域内">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/img_portrait.jpg">
+<meta property="article:published_time" content="2024-12-04T08:52:06.000Z">
+<meta property="article:modified_time" content="2025-10-26T22:25:34.738Z">
+<meta property="article:author" content="Wang Han">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/img_portrait.jpg"><link rel="shortcut icon" href="/img/portrait.png"><link rel="canonical" href="http://example.com/posts/11819.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const hour = new Date().getHours()
+          const isNight = hour <= 8 || hour >= 20
+          if (theme === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else theme === 'light' ? activateLightMode() : activateDarkMode()
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'HCIP| IS-IS',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/layout.css"><link rel="stylesheet" href="/css/font.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loader"><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div><script async="async">(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = 'auto';
+      $loadingBox.style.transition = 'opacity 3s ease 0s'
+      $loadingBox.style.opacity = '0';
+      $loadingBox.classList.add('loaded')
+      setTimeout(function(){
+        $loadingBox.classList.add("loaded")
+      }, 3000);
+    },
+    initLoading: () => {
+      $body.style.overflow = '';
+      $loadingBox.style.transition = ''
+      $loadingBox.style.opacity = '1';
+      $loadingBox.classList.remove('loaded');
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+  setTimeout(function(){preloader.endLoading();}, 3000);
+
+  if (true) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/img_top.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Onism</span></a><a class="nav-page-title" href="/"><span class="site-name">HCIP| IS-IS</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">HCIP| IS-IS</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-04T08:52:06.000Z" title="发表于 2024-12-04 16:52:06">2024-12-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-10-26T22:25:34.738Z" title="更新于 2025-10-27 06:25:34">2025-10-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/">技术记录</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/%E9%80%9A%E4%BF%A1%E7%BD%91%E7%BB%9C/">通信网络</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/%E9%80%9A%E4%BF%A1%E7%BD%91%E7%BB%9C/HCIP/">HCIP</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="IS-IS核心知识"><a href="#IS-IS核心知识" class="headerlink" title="IS-IS核心知识"></a>IS-IS核心知识</h1><h2 id="NET【网络实体名称】"><a href="#NET【网络实体名称】" class="headerlink" title="NET【网络实体名称】"></a>NET【网络实体名称】</h2><img src="https://raw.githubusercontent.com/1223550690/onism.github.io/Photos/2024/12/upgit_20241204_1733302033.png" alt="image-20241204104413233" />
+
+<p>OSI协议栈中设备的网络层信息，主要用于路由计算。</p>
+<p>一台设备至少有一个NET，也可以同时配置多个NET，但是这些NET的System ID必须相同。</p>
+<p><strong>Area ID</strong>：</p>
+<p>由IDP和DSP中的High Order DSP组成，既能够标识路由域，也能够标识路由域中的区域。</p>
+<p>包含：AFI、IDI、High Order DSP。</p>
+<p><strong>System ID</strong>：</p>
+<p>用来在区域内唯一标识主机或路由器。</p>
+<p>包含：System ID</p>
+<p><strong>NET配置</strong>：</p>
+<p><img src="https://raw.githubusercontent.com/1223550690/onism.github.io/Photos/2024/12/upgit_20241204_1733302040.png" alt="image-20241204114129936"></p>
+<p><strong>步骤：将Router ID补成三位，再进行四位切分，最后补上SEL位</strong></p>
+<h2 id="路由器分类"><a href="#路由器分类" class="headerlink" title="路由器分类"></a>路由器分类</h2><ol>
+<li><strong>Level-1</strong>路由器：</li>
+</ol>
+<p>​	部署在非骨干区域，属于IS-IS区域内部路由器</p>
+<ol start="2">
+<li><strong>Level-2</strong>路由器：</li>
+</ol>
+<p>​	部署在骨干区域，属于IS-IS骨干路由器</p>
+<ol start="3">
+<li><p><strong>Level-1-2</strong>路由器：</p>
+<p>部署在骨干区域，属于IS-IS骨干路由器，用于跟<strong>L1</strong>与<strong>L2</strong>邻接</p>
+</li>
+</ol>
+<h2 id="伪节点"><a href="#伪节点" class="headerlink" title="伪节点"></a>伪节点</h2><p>IS-IS需要在所有的路由器中选举一个路由器作为<strong>DIS</strong>（Designated Intermediate System）。</p>
+<p>DIS用来创建和更新伪节点（Pseudonodes），并负责生成伪节点的LSP。</p>
+<p>DIS的选举规则如下：</p>
+<ul>
+<li>DIS优先级数值（大），缺省为64</li>
+<li>MAC地址（大）</li>
+</ul>
+<hr>
+<p><strong>伪节点</strong>是用来模拟广播网络的一个虚拟节点，交互CSNP等信息，用DIS的System ID和Circuit ID（非0值）标识。</p>
+<p>在伪节点LSP中，<strong>只包含邻接信息</strong>而不包含路由信息。</p>
+<hr>
+<p><strong>邻接前提</strong>：</p>
+<ul>
+<li>只有同一层次的相邻路由器才有可能成为邻接。</li>
+<li>对于<strong>Level-1</strong>路由器来说，Area ID必须一致。</li>
+<li>链路两端IS-IS接口的网络类型必须一致。</li>
+<li>链路两端IS-IS接口的地址必须处于同一网段（默认情况下）。</li>
+</ul>
+<h2 id="接口开销"><a href="#接口开销" class="headerlink" title="接口开销"></a>接口开销</h2><p>IS-IS有<strong>3</strong>种方式来确定接口的开销，按照优先级由高到低分别是:</p>
+<ul>
+<li>接口开销: 为单个接口设置开销</li>
+<li>全局开销: 为所有接口设置开销</li>
+<li>自动计算开销: 根据接口带宽自动计算开销</li>
+</ul>
+<p>接口开销的取值范围和接口开销类型有关。</p>
+<p>缺省情况下，IS-IS接口的开销为<strong>10</strong>，最大开销为<strong>63</strong>，开销类型是<strong>narrow</strong>。</p>
+<p>一条IS-IS路径的Cost等于本路由器到达目标网段沿的所有链路的Cost总和</p>
+<h2 id="IS-IS报文类型"><a href="#IS-IS报文类型" class="headerlink" title="IS-IS报文类型"></a>IS-IS报文类型</h2><p>IS-IS采用<strong>TLV</strong>结构构建报文，灵活性和扩展性好</p>
+<p>IS-IS的PDU有<strong>4</strong>种类型：</p>
+<hr>
+<p><strong>IIH</strong>(IS-IS Hello)：</p>
+<p>用于邻接。</p>
+<p>Reserved&#x2F;Circuit Type：表示路由器的类型（01表示L1，10表示L2，11表示L1&#x2F;L2）</p>
+<hr>
+<p><strong>LSP</strong>（ Link State PDU，链路状态报文）：</p>
+<p>用于交换链路信息</p>
+<hr>
+<p><strong>CSNP</strong>（Complete Sequence Number PDU，全序列号报文）：</p>
+<p>用于交流完整的LSDB信息差。缺省周期为<strong>10秒</strong>。</p>
+<hr>
+<p><strong>PSNP</strong>（Partial Sequence Number PDU，部分序列号报文）：</p>
+<p>用于交流部分的LSDB信息差</p>
+<h2 id="LSB"><a href="#LSB" class="headerlink" title="LSB"></a>LSB</h2><p><img src="https://raw.githubusercontent.com/1223550690/onism.github.io/Photos/2024/12/upgit_20241204_1733302047.png" alt="image-20241204112454805"></p>
+<ul>
+<li>命令区：源节点的系统ID</li>
+<li>AREA ADDR：该LSP来源的区域号</li>
+<li>INTF ADDR：该LSP中描述的接口地址</li>
+<li>NBR ID：该LSP中描述的邻接信息</li>
+<li>IP-Internal：该LSP中描述的网段信息</li>
+</ul>
+<hr>
+<p><strong>LSP产生的</strong>原因：</p>
+<ul>
+<li>邻接Up或Down</li>
+<li>IS-IS相关接口Up或Down</li>
+<li>引入的IP路由发生变化</li>
+<li>区域间的IP路由发生变化</li>
+<li>接口被赋了新的metric值</li>
+<li>周期性更新（刷新间隔15min）</li>
+</ul>
+<hr>
+<p><strong>LSP ID:</strong></p>
+<p>由三部分组成，System ID、伪节点ID和LSP分片后的编号。</p>
+<hr>
+<p><strong>广播网络同步：</strong></p>
+<p><strong>LSP -&gt; CSNP -&gt; PSNP -&gt; LSP</strong></p>
+<p><img src="https://raw.githubusercontent.com/1223550690/onism.github.io/Photos/2024/12/upgit_20241204_1733302053.png" alt="image-20241204114941137"></p>
+<p><strong>点对点网络同步：</strong></p>
+<p>**LSP -&gt; PSNP -&gt; LSP -&gt; PSNP **</p>
+<h2 id="路由原理"><a href="#路由原理" class="headerlink" title="路由原理"></a>路由原理</h2><ul>
+<li><strong>Level-1-2</strong>路由器在本区域置位<strong>ATT</strong>，以宣告可以通过自身到达其他区域。<strong>L1</strong>路由器收到后，会产生指向它的默认路由</li>
+<li>缺省下不设置路由渗透，<strong>L1</strong>（非核心区）会向<strong>L2</strong>（核心区）传递路由，反之则不会</li>
+</ul>
+</article><div class="tag_share"></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/posts/d4eef739.html" title="HCIP| Multicast"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">HCIP| Multicast</div></div><div class="info-2"><div class="info-item-1">组播核心知识IGMP【因特网组管理协议】作用：组播网络根据IGMP消息感知组播组成员所在接口，以及组成员加组信息  IGMP组表项是由用户主机发送的IGMP加入报文触发创建的，创建相应(*,G)表项。 IGMP路由表项的作用主要是用来扩展组播路由表项的出接口。 在配置组播协议时，需要注意运行IGMP高版本的交换机可以识别低版本的成员报告，但是低版本的交换机不能识别高版本的成员报告。为了保证IGMP的正常运行，建议在交换机上配置和成员主机相同或高于成员主机的版本。   IGMPv1：主要基于查询和响应机制完成组播组管 报文：普遍组查询报文、成员关系报告报文 IGMPv2：增加了离开组机制、查询器选举机制。IP地址最小的路由器成为查询器。 报文：（新增）成员离开报文（Leave）【目的地址224.0.0.2】、特定组查询报文 IGMPv3：新增了特定源组查询报文（Group-and-Source-Specific...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/img_portrait.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Wang Han</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/1223550690"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/1223550690" target="_blank" title="Github"><i class="fab fa-github" style="color: #hdhfbb;"></i></a><a class="social-icon" href="mailto:w1223550690@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #000000;"></i></a><a class="social-icon" href="https://space.bilibili.com/15149782?spm_id_from=333.1007.0.0" target="_blank" title=""><i class="iconfont icon-bilibili-"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p>Wechat：w1223550660</p><p>每周四定期更新互联网技术、个人项目等知识内容</p><p>博客功能会陆续完善，详情可查看更新日志文档</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#IS-IS%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">IS-IS核心知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NET%E3%80%90%E7%BD%91%E7%BB%9C%E5%AE%9E%E4%BD%93%E5%90%8D%E7%A7%B0%E3%80%91"><span class="toc-number">1.1.</span> <span class="toc-text">NET【网络实体名称】</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%99%A8%E5%88%86%E7%B1%BB"><span class="toc-number">1.2.</span> <span class="toc-text">路由器分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%AA%E8%8A%82%E7%82%B9"><span class="toc-number">1.3.</span> <span class="toc-text">伪节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E5%BC%80%E9%94%80"><span class="toc-number">1.4.</span> <span class="toc-text">接口开销</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IS-IS%E6%8A%A5%E6%96%87%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.5.</span> <span class="toc-text">IS-IS报文类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LSB"><span class="toc-number">1.6.</span> <span class="toc-text">LSB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%8E%9F%E7%90%86"><span class="toc-number">1.7.</span> <span class="toc-text">路由原理</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/31ab4584.html" title="Update log【12.12】">Update log【12.12】</a><time datetime="2024-12-12T09:08:24.000Z" title="发表于 2024-12-12 17:08:24">2024-12-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d4eef739.html" title="HCIP| Multicast">HCIP| Multicast</a><time datetime="2024-12-05T08:29:39.000Z" title="发表于 2024-12-05 16:29:39">2024-12-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/11819.html" title="HCIP| IS-IS">HCIP| IS-IS</a><time datetime="2024-12-04T08:52:06.000Z" title="发表于 2024-12-04 16:52:06">2024-12-04</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/img_top.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Wang Han</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="12984053043" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true"> </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      pjax.loadUrl('/404.html')
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
