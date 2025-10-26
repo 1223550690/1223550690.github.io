@@ -1,0 +1,52 @@
+if theme.preloader.enable
+  case theme.preloader.load_style    
+    when 'gear'
+      include ./load_style/gear.pug
+    when 'ironheart'
+      include ./load_style/ironheart.pug
+    when 'scarecrow'
+      include ./load_style/scarecrow.pug
+    when 'triangles'
+      include ./load_style/triangles.pug
+    when 'wizard'
+      include ./load_style/wizard.pug
+    when 'image'
+      include ./load_style/image.pug
+    when 'gooey'
+      include ./load_style/gooey.pug
+    when 'circular'
+      include ./load_style/circular.pug      
+    default
+      include ./load_style/default.pug
+
+script(async).
+  (()=>{
+    const $loadingBox = document.getElementById('loading-box')
+    const $body = document.body
+    const preloader = {
+      endLoading: () => {
+        $body.style.overflow = 'auto';
+        $loadingBox.style.transition = 'opacity 3s ease 0s'
+        $loadingBox.style.opacity = '0';
+        $loadingBox.classList.add('loaded')
+        setTimeout(function(){
+          $loadingBox.classList.add("loaded")
+        }, 3000);
+      },
+      initLoading: () => {
+        $body.style.overflow = '';
+        $loadingBox.style.transition = ''
+        $loadingBox.style.opacity = '1';
+        $loadingBox.classList.remove('loaded');
+      }
+    }
+
+    preloader.initLoading()
+    window.addEventListener('load', preloader.endLoading)
+    setTimeout(function(){preloader.endLoading();}, 3000);
+
+    if (!{theme.pjax && theme.pjax.enable}) {
+      btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+      btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+    }
+  })()

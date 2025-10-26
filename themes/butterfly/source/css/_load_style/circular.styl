@@ -1,0 +1,79 @@
+#loading-box{
+    --orbit-radius: 38px;
+    background: #000;
+    position: fixed;
+    z-index: 1000;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    text-align: center;
+
+    &.loaded {
+        z-index: -1000;
+        display: none;
+    }
+
+    .loader {
+        width: 400px;
+        height: 400px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #000;
+
+        /* 轨道圆 */
+        .circle {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            margin: auto;
+            transform: rotate(225deg);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-iteration-count: infinite;
+            animation-name: orbit;
+            animation-duration: 5.5s;
+
+            /* 小圆 */
+            &:after {
+                content: '';
+                position: absolute;
+                width: 5px;
+                height: 5px;
+                border-radius: 5px;
+                background: #fff; /* Pick a color */
+            }
+    
+            &:nth-child(2) {  animation-delay: 240ms; }
+            &:nth-child(3) {  animation-delay: 480ms; }
+            &:nth-child(4) {  animation-delay: 720ms; }
+            &:nth-child(5) {  animation-delay: 960ms; }
+        }
+    }
+}
+
+@keyframes orbit { 
+  0%   { transform:rotate(225deg) translateX(var(--orbit-radius)); opacity: 1;
+         animation-timing-function: ease-out; } 
+    
+  7%   { transform:rotate(345deg) translateX(var(--orbit-radius));
+         animation-timing-function: linear; }
+    
+  30%   { transform:rotate(455deg) translateX(var(--orbit-radius));
+          animation-timing-function: ease-in-out; }
+    
+  39%   { transform:rotate(690deg) translateX(var(--orbit-radius));
+          animation-timing-function: linear; }
+    
+  70%   { transform:rotate(815deg) translateX(var(--orbit-radius)); opacity: 1;
+         animation-timing-function: ease-out; }
+    
+  75%   { transform:rotate(945deg) translateX(var(--orbit-radius)); 
+         animation-timing-function: ease-out; }
+    
+  76% { transform:rotate(945deg) translateX(var(--orbit-radius)); opacity: 0; }
+  100% { transform:rotate(945deg) translateX(var(--orbit-radius)); opacity: 0; } 
+}
