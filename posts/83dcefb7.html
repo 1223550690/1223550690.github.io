@@ -1,0 +1,351 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>1 | Onism</title><meta name="author" content="Wang Han"><meta name="copyright" content="Wang Han"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一. 引言 【butterfly 官方文档】 当进入网页时，因为加载速度的问题，可能会导致 top_img 图片出现断层显示，或者网页加载不全而出现等待时间，开启 preloader 后，会显示加载动画，等页面加载完，加载动画会消失。  没有开启加载动画情况下，页面会由于部分资源加载不完全导致显示异常（比如封面图没出来的话会把背景底色露出来）。加载动画不光可以解决潜在的显示异常（省去很多测试时间）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1">
+<meta property="og:url" content="http://example.com/posts/83dcefb7.html">
+<meta property="og:site_name" content="Onism">
+<meta property="og:description" content="一. 引言 【butterfly 官方文档】 当进入网页时，因为加载速度的问题，可能会导致 top_img 图片出现断层显示，或者网页加载不全而出现等待时间，开启 preloader 后，会显示加载动画，等页面加载完，加载动画会消失。  没有开启加载动画情况下，页面会由于部分资源加载不完全导致显示异常（比如封面图没出来的话会把背景底色露出来）。加载动画不光可以解决潜在的显示异常（省去很多测试时间）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/img_portrait.jpg">
+<meta property="article:published_time" content="2025-10-27T12:26:56.000Z">
+<meta property="article:modified_time" content="2025-10-27T20:30:22.779Z">
+<meta property="article:author" content="Wang Han">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/img_portrait.jpg"><link rel="shortcut icon" href="/img/portrait.png"><link rel="canonical" href="http://example.com/posts/83dcefb7.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const hour = new Date().getHours()
+          const isNight = hour <= 8 || hour >= 20
+          if (theme === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else theme === 'light' ? activateLightMode() : activateDarkMode()
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '1',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/layout.css"><link rel="stylesheet" href="/css/font.css"><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loader"><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div><script async="async">(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = 'auto';
+      $loadingBox.style.transition = 'opacity 3s ease 0s'
+      $loadingBox.style.opacity = '0';
+      $loadingBox.classList.add('loaded')
+      setTimeout(function(){
+        $loadingBox.classList.add("loaded")
+      }, 3000);
+    },
+    initLoading: () => {
+      $body.style.overflow = '';
+      $loadingBox.style.transition = ''
+      $loadingBox.style.opacity = '1';
+      $loadingBox.classList.remove('loaded');
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+  setTimeout(function(){preloader.endLoading();}, 3000);
+
+  if (true) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/img_top.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Onism</span></a><a class="nav-page-title" href="/"><span class="site-name">1</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">1</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-10-27T12:26:56.000Z" title="发表于 2025-10-27 20:26:56">2025-10-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-10-27T20:30:22.779Z" title="更新于 2025-10-28 04:30:22">2025-10-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="一-引言"><a href="#一-引言" class="headerlink" title="一. 引言"></a>一. 引言</h2><blockquote>
+<p>【butterfly 官方文档】</p>
+<p>当进入网页时，因为加载速度的问题，可能会导致 top_img 图片出现断层显示，或者网页加载不全而出现等待时间，开启 preloader 后，会显示加载动画，等页面加载完，加载动画会消失。</p>
+</blockquote>
+<p>没有开启加载动画情况下，页面会由于部分资源加载不完全导致显示异常（比如封面图没出来的话会把背景底色露出来）。加载动画不光可以解决潜在的显示异常（省去很多测试时间），同时也能提高网页浏览的整体流畅度。</p>
+<p>但是 butterfly 官方提供的默认动画比较单一（见下图），而且不匹配页面整体 UI 风格，便着手考虑修改此加载动画效果。</p>
+<p><img src="/img/%E3%80%90%E5%8A%9F%E8%83%BD%E6%8B%93%E5%B1%95%E3%80%91%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8A%A8%E7%94%BB%E6%95%99%E7%A8%8B/default.gif" alt="img"></p>
+<p>本文主要分两部分内容，第一部分的主要内容参考了</p>
+<blockquote>
+<p>文章作者: 百里飞洋 Barry-Flynn<br>文章链接: <a target="_blank" rel="noopener" href="https://blog.meta-code.top/2022/06/18/2022-73/">https://blog.meta-code.top/2022/06/18/2022-73/</a></p>
+</blockquote>
+<p>在 <strong>第一部分</strong> 中，本文将介绍涉及自定义动画的所有文件以及修改指导。在原文基础上，会额外给出每段修改代码的注释意见，方便理解。</p>
+<p>而在 <strong>第二部分</strong> 中，本文将介绍利用 <strong>CodePen 网站</strong> 搜索并制作（修改）简单的 CSS 动画，有个人想法可以根据其底层逻辑进行个性化创作。</p>
+<hr>
+<h2 id="二-基础配置"><a href="#二-基础配置" class="headerlink" title="二. 基础配置"></a>二. 基础配置</h2><h3 id="1-修改-pug-文件-HTML"><a href="#1-修改-pug-文件-HTML" class="headerlink" title="1. 修改 pug 文件(HTML)"></a>1. 修改 pug 文件(HTML)</h3><blockquote>
+<p>[!NOTE]</p>
+<p>Pug 是一种简洁的 HTML 模板引擎，使用缩进表示 HTML 结构。它通常用于生成结构化的 HTML 文件, 适用于 Node.js 应用程序。</p>
+</blockquote>
+<p>修改 <span style="color:#FF8000;"> <code>\themes\butterfly\layout\includes\loading\fullpage-loading(loading.pug)</code> </span></p>
+<p>【修改前】</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#loading-box</span><br><span class="line">  # 帷幕元素</span><br><span class="line">  .loading-left-bg  </span><br><span class="line">  .loading-right-bg</span><br><span class="line">  # 动画主体元素</span><br><span class="line">  .spinner-box</span><br><span class="line">    .configure-border-1</span><br><span class="line">      .configure-core</span><br><span class="line">    .configure-border-2</span><br><span class="line">      .configure-core</span><br><span class="line">    .loading-word= _p(&#x27;loading&#x27;)</span><br><span class="line">script().</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>Pug 代码创建了默认加载动画的 HTML 结构，但是默认情况下，渲染器会直接读取 <span style="color:#FF8000;"> loading.pug </span> 中描述的动画结构，当我们存在不同的动画模板时，调整将变得困难。</p>
+<p>这 <strong>里我们需要将每个动画固定的 HTML 代码打包成单独的文件，并在设置参数处设立选择参数。</strong></p>
+<p>【修改后】</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if theme.preloader.enable</span><br><span class="line"> case theme.preloader.load_style   </span><br><span class="line">  when &#x27;circular&#x27;</span><br><span class="line">   include ./load_style/circular.pug    </span><br><span class="line">  default</span><br><span class="line">   include ./load_style/default.pug</span><br><span class="line">script().</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>其中，<span style="color:#FF8000;"> circular.pug </span> 是我创建的动画模板文件，<strong>自定义模板需放在同级目录下的 <span style="color:#FF8000;"> load_style </span> 文件夹中</strong>。（当然其他地方也可以，请自行调整代码中的引用位置）</p>
+<p>Vscode 中 <strong>目录结构</strong> 如下，原文还添加了其他动画模板，这里不作为本文重点所以不进行添加。</p>
+<p>在后续也有类似的处理，故也不再截图描述。</p>
+<img src="/img/%E3%80%90%E5%8A%9F%E8%83%BD%E6%8B%93%E5%B1%95%E3%80%91%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8A%A8%E7%94%BB%E6%95%99%E7%A8%8B/image-20241226115622263.png" alt="image-20241226115622263" style="zoom:50%;" />
+
+
+
+<blockquote>
+<p>[!TIP]</p>
+<p>在自定义动画运行时，可以会出现长时间无法退出加载动画的情况，这是因为加载动画的关闭与否是与网站加载状态的load的返回值决定的，而网站加载完成与否这个概念是很模糊的。</p>
+<p>这里给到一个<strong>超时自动结束</strong>的loaded方案，可以给加载动画设置一个settimeout()的函数来达到伪·加载完毕的效果，即超时了自动关闭加载动画，即使页面还在加载。得益于loading-js使用的是原生js，所以可以给script添加async属性实现异步加载，以免阻塞后续HTML渲染。仅仅需要给控制加载动画开关的loading-js.pug添加两行代码即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- script.</span><br><span class="line">+ script(async). # 启动异步加载</span><br><span class="line">    var preloader = &#123;</span><br><span class="line">      endLoading: () =&gt; &#123;</span><br><span class="line">        document.body.style.overflow = &#x27;auto&#x27;;</span><br><span class="line">        document.getElementById(&#x27;loading-box&#x27;).classList.add(&quot;loaded&quot;)</span><br><span class="line">      &#125;,</span><br><span class="line">      initLoading: () =&gt; &#123;</span><br><span class="line">        document.body.style.overflow = &#x27;&#x27;;</span><br><span class="line">        document.getElementById(&#x27;loading-box&#x27;).classList.remove(&quot;loaded&quot;)</span><br><span class="line"></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    window.addEventListener(&#x27;load&#x27;,()=&gt; &#123;preloader.endLoading()&#125;)</span><br><span class="line">+   setTimeout(function()&#123;preloader.endLoading();&#125;, 5000); # 5s超时则自动转入结束加载</span><br></pre></td></tr></table></figure>
+
+
+</blockquote>
+<h3 id="2-修改-loading-styl-CSS"><a href="#2-修改-loading-styl-CSS" class="headerlink" title="2. 修改 loading.styl(CSS)"></a>2. 修改 loading.styl(CSS)</h3><blockquote>
+<p>[!NOTE]</p>
+<p>Stylus 是一种 CSS 预处理器，允许使用更清晰和简洁的语法来生成 CSS。它支持嵌套、变量等高级功能。</p>
+</blockquote>
+<p>修改 <span style="color:#FF8000;"> <code>\themes\butterfly\source\css\_layout\loading.styl</code> </span></p>
+<p>【修改前】默认动画的样式代码</p>
+<p>【修改后】</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">if hexo-config(&#x27;preloader<span class="selector-class">.enable</span>&#x27;)</span><br><span class="line">  if hexo-config(&#x27;preloader<span class="selector-class">.load_style</span>&#x27;) == &#x27;circular&#x27;</span><br><span class="line">    <span class="keyword">@import</span> <span class="string">&#x27;./_load_style/circular&#x27;</span></span><br><span class="line">  else</span><br><span class="line">    @import <span class="string">&#x27;./_load_style/default&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>逻辑同上，也是将固定样式修改为自选样式，你要做的也是在同级目录下新建 <span style="color:#FF8000;"><strong>_load_style</strong></span> 文件夹，并创建新的自定义动画样式文件（在这里是 circular.stly）</p>
+<h3 id="3-修改相关的配置文件"><a href="#3-修改相关的配置文件" class="headerlink" title="3. 修改相关的配置文件"></a>3. 修改相关的配置文件</h3><p>（1）修改 <span style="color:#FF8000;"> <strong>\themes\butterfly\layout\includes\layout.pug</strong> </span></p>
+<p>此处控制加载动画的 <strong>HTML 文件对象选择</strong>，**-** 为删减代码，**+** 为新增代码（下同）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">body</span><br><span class="line"> - if theme.preloader</span><br><span class="line"> + if theme.preloader.enable</span><br><span class="line">   	!=partial(&#x27;includes/loading/index&#x27;, &#123;&#125;, &#123;cache: true&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>（2）修改 <span style="color:#FF8000;"> <strong>\themes\butterfly\source\css\var.styl</strong> </span></p>
+<p>此处控制加载动画的 <strong>自定义背景色配置</strong></p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">  // preloader</span><br><span class="line">- $preloader-bg = <span class="selector-id">#37474f</span></span><br><span class="line">+ $preloader-bg = hexo-config(&#x27;preloader<span class="selector-class">.enable</span>&#x27;) &amp;&amp; hexo-config(&#x27;preloader<span class="selector-class">.load_color</span>&#x27;) ? convert(hexo-config(&#x27;preloader<span class="selector-class">.load_color</span>&#x27;)) : <span class="number">#37474f</span></span><br><span class="line">  $preloader-word-color = <span class="number">#fff</span></span><br></pre></td></tr></table></figure>
+
+<p>（3）修改 <span style="color:#FF8000;"><strong>_config.butterfly.yml 的 preloader 配置项</strong></span></p>
+<p>此处重新设置 <strong>preloader 类的参数</strong>，以适配刚刚的修改</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">preloader:</span> <span class="literal">true</span></span><br><span class="line"><span class="string">+</span> <span class="attr">preloader:</span></span><br><span class="line"><span class="string">+</span> 	<span class="attr">enable:</span> <span class="literal">true</span> <span class="comment"># true|false</span></span><br><span class="line"><span class="string">+</span> 	<span class="attr">load_color:</span> <span class="string">&#x27;#000000&#x27;</span> <span class="comment"># &#x27;#37474f&#x27;</span></span><br><span class="line"><span class="string">+</span>		<span class="attr">load_style:</span> <span class="string">circle</span> <span class="comment"># default|circle</span></span><br><span class="line"><span class="string">+</span>		<span class="attr">load_image:</span>  <span class="comment"># url</span></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h2 id="三-动画设计"><a href="#三-动画设计" class="headerlink" title="三. 动画设计"></a>三. 动画设计</h2><p>以上工作完成后，我们的自定义动画修改逻辑就极度简单了，即：</p>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<p><strong>得到动画的 HTML 与 CSS 文件 - &gt; 转换为适用于博客的 PUG 与 STLY 文件</strong></p>
+</blockquote>
+<p>如何创建动画并获取对应的代码内容呢？这里我们可以使用 <strong>CodePen</strong> 来实现。</p>
+<img src="/img/%E3%80%90%E5%8A%9F%E8%83%BD%E6%8B%93%E5%B1%95%E3%80%91%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8A%A8%E7%94%BB%E6%95%99%E7%A8%8B/image-20241226181616418.png" alt="image-20241226181616418" style="zoom:50%;" />
+
+
+
+<p>这边就以我本站的小球动画为例，在 <span style="color:#FF8000;"> Trending </span>（热门）界面搜索“<span style="color:#FF8000;"> Loading </span>”，即可得到许多开源的加载动画</p>
+<img src="/img/%E3%80%90%E5%8A%9F%E8%83%BD%E6%8B%93%E5%B1%95%E3%80%91%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8A%A8%E7%94%BB%E6%95%99%E7%A8%8B/image-20241226181851655.png" alt="image-20241226181851655" style="zoom:50%;" />
+
+
+
+<p>进入到项目的编辑页面，可以看到对应 HTML 与 CSS 代码，在此处做任何调整，下方的动画效果也将实时的调整，因而可以十分方便地设计与修改个性化动画。</p>
+<img src="/img/%E3%80%90%E5%8A%9F%E8%83%BD%E6%8B%93%E5%B1%95%E3%80%91%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8A%A8%E7%94%BB%E6%95%99%E7%A8%8B/image-20241226182311069.png" alt="image-20241226182311069" style="zoom:50%;" />
+
+<h3 id="1-HTML-转换"><a href="#1-HTML-转换" class="headerlink" title="1. HTML 转换"></a>1. HTML 转换</h3><p>在这里，我将分别给出 HTML 与 CSS 代码的转换参考，他们的语法结构几乎是一模一样的，只是在表达上存在微调。</p>
+<p>先以 HTML 为例：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">.loader</span><br><span class="line">	.circle</span><br><span class="line">	.circle</span><br><span class="line">	.circle</span><br><span class="line">	.circle</span><br><span class="line">	.circle</span><br></pre></td></tr></table></figure>
+
+<p>对应的 PUG 代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#loading-box</span><br><span class="line"> div.loader</span><br><span class="line">  div.circle</span><br><span class="line">  div.circle</span><br><span class="line">  div.circle</span><br><span class="line">  div.circle</span><br><span class="line">  div.circle</span><br></pre></td></tr></table></figure>
+
+<p>你要做的只是加上开头的 loading-box 和块级容器对象 div。</p>
+<h3 id="2-CSS-转换"><a href="#2-CSS-转换" class="headerlink" title="2. CSS 转换"></a>2. CSS 转换</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.loader</span> &#123;</span><br><span class="line">    <span class="attr">--orbit-radius</span>: <span class="number">38px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#000</span>;</span><br><span class="line">    <span class="attribute">position</span>: fixed;</span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">1000</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100vw</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100vh</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line"></span><br><span class="line">  <span class="selector-class">.circle</span> &#123;</span><br><span class="line">            <span class="attribute">position</span>: absolute;</span><br><span class="line">            <span class="attribute">width</span>: <span class="number">1px</span>;</span><br><span class="line">            <span class="attribute">height</span>: <span class="number">1px</span>;</span><br><span class="line">            <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">            <span class="attribute">margin</span>: auto;</span><br><span class="line">            <span class="attribute">transform</span>: <span class="built_in">rotate</span>(<span class="number">225deg</span>);</span><br><span class="line">            <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">            <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">            <span class="attribute">transform</span>: <span class="built_in">translate</span>(-<span class="number">50%</span>, -<span class="number">50%</span>);</span><br><span class="line">            <span class="attribute">animation-iteration-count</span>: infinite;</span><br><span class="line">            <span class="attribute">animation-name</span>: orbit;</span><br><span class="line">            <span class="attribute">animation-duration</span>: <span class="number">5.5s</span>;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    &amp;<span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">      <span class="attribute">content</span>: <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">      <span class="attribute">position</span>: absolute;</span><br><span class="line">      <span class="attribute">width</span>: <span class="number">5px</span>;</span><br><span class="line">      <span class="attribute">height</span>: <span class="number">5px</span>;</span><br><span class="line">      <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">      <span class="attribute">background</span>: <span class="number">#fff</span>; <span class="comment">/* Pick a color */</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    &amp;<span class="selector-pseudo">:nth-child</span>(<span class="number">2</span>) &#123;  <span class="attribute">animation-delay</span>: <span class="number">240ms</span>; &#125;</span><br><span class="line">    &amp;<span class="selector-pseudo">:nth-child</span>(<span class="number">3</span>) &#123;  <span class="attribute">animation-delay</span>: <span class="number">480ms</span>; &#125;</span><br><span class="line">    &amp;<span class="selector-pseudo">:nth-child</span>(<span class="number">4</span>) &#123;  <span class="attribute">animation-delay</span>: <span class="number">720ms</span>; &#125;</span><br><span class="line">    &amp;<span class="selector-pseudo">:nth-child</span>(<span class="number">5</span>) &#123;  <span class="attribute">animation-delay</span>: <span class="number">960ms</span>; &#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@keyframes</span> orbit &#123; </span><br><span class="line">  <span class="number">0%</span>   &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">225deg</span>)<span class="built_in">translateX</span>(<span class="number">38px</span>); <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">         <span class="attribute">animation-timing-function</span>: ease-out; &#125; </span><br><span class="line">    </span><br><span class="line">  <span class="number">7%</span>   &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">345deg</span>)<span class="built_in">translateX</span>(<span class="number">38px</span>);</span><br><span class="line">         <span class="attribute">animation-timing-function</span>: linear; &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="number">30%</span>   &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">455deg</span>)<span class="built_in">translateX</span>(<span class="number">38px</span>);</span><br><span class="line">          <span class="attribute">animation-timing-function</span>: ease-in-out; &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="number">39%</span>   &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">690deg</span>)<span class="built_in">translateX</span>(<span class="number">38px</span>);</span><br><span class="line">          <span class="attribute">animation-timing-function</span>: linear; &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="number">70%</span>   &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">815deg</span>)<span class="built_in">translateX</span>(<span class="number">38px</span>); <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">         <span class="attribute">animation-timing-function</span>: ease-out; &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="number">75%</span>   &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">945deg</span>)<span class="built_in">translateX</span>(<span class="number">38px</span>); </span><br><span class="line">         <span class="attribute">animation-timing-function</span>: ease-out; &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="number">76%</span> &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">945deg</span>)<span class="built_in">translateX</span>(<span class="number">38px</span>); <span class="attribute">opacity</span>: <span class="number">0</span>; &#125;</span><br><span class="line">  <span class="number">100%</span> &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">945deg</span>)<span class="built_in">translateX</span>(<span class="number">38px</span>); <span class="attribute">opacity</span>: <span class="number">0</span>; &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对应的 styl 代码如下：</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">#loading-box&#123; </span><br><span class="line">    <span class="attr">--orbit-radius</span>: <span class="number">38px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#000</span>;</span><br><span class="line">    <span class="attribute">position</span>: fixed;</span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">1000</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100vw</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100vh</span>;</span><br><span class="line">    <span class="attribute">overflow</span>: hidden;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line"></span><br><span class="line">    &amp;<span class="selector-class">.loaded</span> &#123;</span><br><span class="line">        <span class="attribute">z-index</span>: -<span class="number">1000</span>;</span><br><span class="line">        <span class="attribute">display</span>: none;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="selector-class">.loader</span> &#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">400px</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">400px</span>;</span><br><span class="line">        <span class="attribute">position</span>: absolute;</span><br><span class="line">        <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">        <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">        <span class="attribute">transform</span>: <span class="built_in">translate</span>(-<span class="number">50%</span>, -<span class="number">50%</span>);</span><br><span class="line">        <span class="attribute">background</span>: <span class="number">#000</span>;</span><br><span class="line">    </span><br><span class="line">        <span class="comment">/* 轨道圆 */</span></span><br><span class="line">        <span class="selector-class">.circle</span> &#123;</span><br><span class="line">            <span class="attribute">position</span>: absolute;</span><br><span class="line">            <span class="attribute">width</span>: <span class="number">1px</span>;</span><br><span class="line">            <span class="attribute">height</span>: <span class="number">1px</span>;</span><br><span class="line">            <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">            <span class="attribute">margin</span>: auto;</span><br><span class="line">            <span class="attribute">transform</span>: <span class="built_in">rotate</span>(<span class="number">225deg</span>);</span><br><span class="line">            <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">            <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">            <span class="attribute">transform</span>: <span class="built_in">translate</span>(-<span class="number">50%</span>, -<span class="number">50%</span>);</span><br><span class="line">            <span class="attribute">animation-iteration-count</span>: infinite;</span><br><span class="line">            <span class="attribute">animation-name</span>: orbit;</span><br><span class="line">            <span class="attribute">animation-duration</span>: <span class="number">5.5s</span>;</span><br><span class="line">    </span><br><span class="line">            <span class="comment">/* 小圆 */</span></span><br><span class="line">            <span class="selector-pseudo">&amp;:after</span> &#123;</span><br><span class="line">                <span class="attribute">content</span>: <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">                <span class="attribute">position</span>: absolute;</span><br><span class="line">                <span class="attribute">width</span>: <span class="number">5px</span>;</span><br><span class="line">                <span class="attribute">height</span>: <span class="number">5px</span>;</span><br><span class="line">                <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">                <span class="attribute">background</span>: <span class="number">#fff</span>; <span class="comment">/* Pick a color */</span></span><br><span class="line">            &#125;</span><br><span class="line">    </span><br><span class="line">            <span class="selector-pseudo">&amp;:nth-child</span>(<span class="number">2</span>) &#123;  <span class="attribute">animation-delay</span>: <span class="number">240ms</span>; &#125;</span><br><span class="line">            <span class="selector-pseudo">&amp;:nth-child</span>(<span class="number">3</span>) &#123;  <span class="attribute">animation-delay</span>: <span class="number">480ms</span>; &#125;</span><br><span class="line">            <span class="selector-pseudo">&amp;:nth-child</span>(<span class="number">4</span>) &#123;  <span class="attribute">animation-delay</span>: <span class="number">720ms</span>; &#125;</span><br><span class="line">            <span class="selector-pseudo">&amp;:nth-child</span>(<span class="number">5</span>) &#123;  <span class="attribute">animation-delay</span>: <span class="number">960ms</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@keyframes</span> orbit &#123; </span><br><span class="line">  <span class="number">0%</span>   &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">225deg</span>) <span class="built_in">translateX</span>(<span class="built_in">var</span>(--orbit-radius)); <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">         <span class="attribute">animation-timing-function</span>: ease-out; &#125; </span><br><span class="line">    </span><br><span class="line">  <span class="number">7%</span>   &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">345deg</span>) <span class="built_in">translateX</span>(<span class="built_in">var</span>(--orbit-radius));</span><br><span class="line">         <span class="attribute">animation-timing-function</span>: linear; &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="number">30%</span>   &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">455deg</span>) <span class="built_in">translateX</span>(<span class="built_in">var</span>(--orbit-radius));</span><br><span class="line">          <span class="attribute">animation-timing-function</span>: ease-in-out; &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="number">39%</span>   &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">690deg</span>) <span class="built_in">translateX</span>(<span class="built_in">var</span>(--orbit-radius));</span><br><span class="line">          <span class="attribute">animation-timing-function</span>: linear; &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="number">70%</span>   &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">815deg</span>) <span class="built_in">translateX</span>(<span class="built_in">var</span>(--orbit-radius)); <span class="attribute">opacity</span>: <span class="number">1</span>;</span><br><span class="line">         <span class="attribute">animation-timing-function</span>: ease-out; &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="number">75%</span>   &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">945deg</span>) <span class="built_in">translateX</span>(<span class="built_in">var</span>(--orbit-radius)); </span><br><span class="line">         <span class="attribute">animation-timing-function</span>: ease-out; &#125;</span><br><span class="line">    </span><br><span class="line">  <span class="number">76%</span> &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">945deg</span>) <span class="built_in">translateX</span>(<span class="built_in">var</span>(--orbit-radius)); <span class="attribute">opacity</span>: <span class="number">0</span>; &#125;</span><br><span class="line">  <span class="number">100%</span> &#123; <span class="attribute">transform</span>:<span class="built_in">rotate</span>(<span class="number">945deg</span>) <span class="built_in">translateX</span>(<span class="built_in">var</span>(--orbit-radius)); <span class="attribute">opacity</span>: <span class="number">0</span>; &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>可以注意到，二者语法逻辑是一模一样的，唯一较大不同是 styl 添加了 <span style="color:#FF8000;">&amp;.loaded </span></p>
+<pre><code>&amp;.loaded &#123;
+    z-index: -1000;
+    display: none;
+&#125;
+</code></pre>
+<p>这段代码定义了加载动画完成后的显示状态，功能是将 <strong>动画元素置于底层并不可见</strong>。</p>
+<p>修改完毕后，可以 <span style="color:#FF8000;"> hexo g &amp;&amp; hexo s </span> 在本地查看动画效果。</p>
+</article><div class="tag_share"></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/posts/4e7880ef.html" title="Update log【12.26】"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Update log【12.26】</div></div><div class="info-2"><div class="info-item-1">Update Log【2024-12-26】功能 修改了资源加载动画效果   关闭了文章分享功能   文章Bug其他</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/img_portrait.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Wang Han</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/1223550690"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/1223550690" target="_blank" title="Github"><i class="fab fa-github" style="color: #hdhfbb;"></i></a><a class="social-icon" href="mailto:w1223550690@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #000000;"></i></a><a class="social-icon" href="https://space.bilibili.com/15149782?spm_id_from=333.1007.0.0" target="_blank" title=""><i class="iconfont icon-bilibili-"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content"><p>Wechat：w1223550660</p><p>每周四定期更新互联网技术、个人项目等知识内容</p><p>博客功能会陆续完善，详情可查看更新日志文档</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">一. 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">二. 基础配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BF%AE%E6%94%B9-pug-%E6%96%87%E4%BB%B6-HTML"><span class="toc-number">2.1.</span> <span class="toc-text">1. 修改 pug 文件(HTML)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BF%AE%E6%94%B9-loading-styl-CSS"><span class="toc-number">2.2.</span> <span class="toc-text">2. 修改 loading.styl(CSS)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BF%AE%E6%94%B9%E7%9B%B8%E5%85%B3%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.3.</span> <span class="toc-text">3. 修改相关的配置文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%8A%A8%E7%94%BB%E8%AE%BE%E8%AE%A1"><span class="toc-number">3.</span> <span class="toc-text">三. 动画设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-HTML-%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.1.</span> <span class="toc-text">1. HTML 转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-CSS-%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.2.</span> <span class="toc-text">2. CSS 转换</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/83dcefb7.html" title="1">1</a><time datetime="2025-10-27T12:26:56.000Z" title="发表于 2025-10-27 20:26:56">2025-10-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/4e7880ef.html" title="Update log【12.26】">Update log【12.26】</a><time datetime="2025-10-26T15:09:50.000Z" title="发表于 2025-10-26 23:09:50">2025-10-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/31ab4584.html" title="Update log【12.12】">Update log【12.12】</a><time datetime="2024-12-12T09:08:24.000Z" title="发表于 2024-12-12 17:08:24">2024-12-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d4eef739.html" title="HCIP| Multicast">HCIP| Multicast</a><time datetime="2024-12-05T08:29:39.000Z" title="发表于 2024-12-05 16:29:39">2024-12-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/11819.html" title="HCIP| IS-IS">HCIP| IS-IS</a><time datetime="2024-12-04T08:52:06.000Z" title="发表于 2024-12-04 16:52:06">2024-12-04</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/img_top.jpg);"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By Wang Han</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="12984053043" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true"> </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script>(() => {
+  const destroyAplayer = () => {
+    if (window.aplayers) {
+      for (let i = 0; i < window.aplayers.length; i++) {
+        if (!window.aplayers[i].options.fixed) {
+          window.aplayers[i].destroy()
+        }
+      }
+    }
+  }
+
+  const runMetingJS = () => {
+    typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+  }
+
+  btf.addGlobalFn('pjaxSend', destroyAplayer, 'destroyAplayer')
+  btf.addGlobalFn('pjaxComplete', loadMeting, 'runMetingJS')
+})()</script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>(() => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => fn())
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      pjax.loadUrl('/404.html')
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
