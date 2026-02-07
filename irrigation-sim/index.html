@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart LoRa Irrigation Digital Twin v2.6 (Tooltip Fix)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Smart LoRa Irrigation Digital Twin v2.7 (Mobile Responsive)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -21,8 +21,9 @@
             --log-height: 160px; 
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+        /* --- 桌面端默认布局 (保持不变) --- */
         body {
             font-family: 'Segoe UI', 'Roboto', monospace;
             background-color: var(--bg-color);
@@ -86,7 +87,7 @@
             grid-template-columns: repeat(6, 1fr);
             grid-template-rows: repeat(6, 1fr);
             gap: 8px;
-            width: 100%; height: 100%; /* 满铺修复 */
+            width: 100%; height: 100%; 
             background: #e8dcc6; border: 8px solid #d4c5a9;
             padding: 10px; border-radius: 4px; position: relative; box-sizing: border-box;
         }
@@ -127,18 +128,14 @@
         .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; margin-left: auto; }
         .status-dot.on { background: var(--success); box-shadow: 0 0 5px var(--success); }
 
-        /* 全局悬浮框样式 (修复版) */
+        /* --- Tooltip --- */
         #global-tooltip {
-            position: fixed; /* 关键：固定定位，脱离任何面板的 overflow 限制 */
-            z-index: 9999;
+            position: fixed; z-index: 9999;
             background: rgba(44, 62, 80, 0.95); color: white;
             padding: 10px; border-radius: 4px; font-size: 11px;
-            pointer-events: none; /* 让鼠标穿透，防止闪烁 */
-            display: none; /* 默认隐藏 */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            width: 200px;
+            pointer-events: none; display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); width: 200px;
         }
-        /* 内部内容样式 */
         .spec-row { display: flex; justify-content: space-between; margin-bottom: 4px; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 2px; }
         .spec-row span:first-child { color: #bdc3c7; }
         .highlight-row { color: var(--energy); font-weight: bold; border-top: 1px solid #666; padding-top: 5px; margin-top: 5px; }
@@ -162,11 +159,81 @@
         .log-time { color: var(--energy); margin-right: 10px; font-weight: bold; }
         .log-info { color: #3498db; }
         .log-audit { color: #2ecc71; font-weight: bold; background: rgba(46, 204, 113, 0.1); padding: 5px; border-left: 3px solid #2ecc71; margin: 5px 0; }
-        
         body.log-hidden .log-console { display: none; }
         body.log-hidden .log-btn.toggle i { transform: rotate(180deg); }
 
         @keyframes pulse { 0% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.5; transform: scale(1); } }
+
+        /* ========================================= */
+        /* --- 响应式设计 (Responsive Design) --- */
+        /* ========================================= */
+        @media (max-width: 1024px) {
+            body {
+                display: flex;
+                flex-direction: column;
+                height: auto; /* 允许 Body 随内容长高 */
+                overflow-y: auto; /* 开启整个页面的垂直滚动 */
+            }
+
+            header {
+                position: sticky; /* 顶栏吸顶 */
+                top: 0;
+                padding: 0 10px;
+            }
+            
+            .brand { font-size: 16px; }
+            .brand span { display: none; /* 手机端隐藏版本号以节省空间 */ }
+            .sim-controls select { max-width: 80px; }
+
+            /* 将主工作区改为垂直堆叠 */
+            .main-workspace {
+                display: flex;
+                flex-direction: column;
+                height: auto;
+                overflow: visible;
+                padding: 10px;
+                gap: 15px;
+            }
+
+            /* 通用面板改为自适应高度 */
+            .panel-box {
+                height: auto;
+                overflow: visible;
+                min-height: 250px; /* 防止太扁 */
+            }
+
+            /* 核心修改：利用 Order 属性调整显示顺序 */
+            /* 1. 将试验田 (Field) 放在最前面，因为它是视觉核心 */
+            .field-wrapper {
+                order: 1;
+                height: 400px; /* 给试验田一个固定的足够高度 */
+            }
+
+            /* 2. 组件状态放在第二位 */
+            .panel-box:nth-child(3) { /* 也就是原来的右侧栏 */
+                order: 2;
+                max-height: 400px; /* 限制高度防止过长 */
+            }
+
+            /* 3. 设置面板放在最后 */
+            .panel-box:nth-child(1) { /* 也就是原来的左侧栏 */
+                order: 3;
+            }
+
+            /* 4. 日志放在最底端 */
+            .log-wrapper {
+                order: 4;
+                height: 300px; /* 手机端日志固定高度 */
+                flex-shrink: 0;
+            }
+
+            /* 修复 Tooltip 在手机端的位置逻辑 */
+            #global-tooltip {
+                width: 90%; /* 手机端 Tooltip 宽度自适应 */
+                left: 5% !important;
+                /* 如果在手机端悬停不便，可以考虑改为点击触发，但保持现状触摸也能用 */
+            }
+        }
     </style>
 </head>
 <body>
@@ -174,20 +241,20 @@
 
     <header>
         <div class="brand">
-            <i class="fa-solid fa-wheat-awn" style="color:var(--success)"></i> AgriTech Pro <span>LoRaWAN Edition v2.6</span>
+            <i class="fa-solid fa-wheat-awn" style="color:var(--success)"></i> AgriTech Pro <span>LoRaWAN Edition v2.7</span>
         </div>
         <div style="font-size: 14px; color: #555;">
-            <i class="fa-regular fa-sun" id="sun-icon"></i> <span id="sim-clock">Day 0 - 06:00</span> <span style="margin-left:15px; font-weight:bold" id="sim-weather">Sunny</span>
+            <i class="fa-regular fa-sun" id="sun-icon"></i> <span id="sim-clock">Day 0 - 06:00</span>
         </div>
         <div class="sim-controls">
             <select id="speed-selector">
                 <option value="1">1 min/s</option>
                 <option value="5">5 min/s</option>
                 <option value="10" selected>10 min/s</option>
-                <option value="60">1 Hr/s (Ultra)</option>
+                <option value="60">1 Hr/s</option>
             </select>
-            <button onclick="sim.toggle()" id="btn-toggle" class="active"><i class="fa-solid fa-play"></i> Run</button>
-            <button onclick="sim.reset()" class="stop"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+            <button onclick="sim.toggle()" id="btn-toggle" class="active"><i class="fa-solid fa-play"></i></button>
+            <button onclick="sim.reset()" class="stop"><i class="fa-solid fa-rotate-right"></i></button>
         </div>
     </header>
 
@@ -197,14 +264,13 @@
             <div class="settings-form">
                 <div class="form-section" style="border-left: 3px solid var(--danger);">
                     <span class="section-title"><i class="fa-solid fa-flask"></i> Physics & Weather</span>
-                    <div class="checkbox-row"><input type="checkbox" id="chk-overcast" onchange="sim.params.forceCloudy = this.checked"><label for="chk-overcast">Force Long-term Overcast</label></div>
-                    <label class="form-label">Evaporation Rate: <span id="disp-evap">Normal</span></label>
+                    <div class="checkbox-row"><input type="checkbox" id="chk-overcast" onchange="sim.params.forceCloudy = this.checked"><label for="chk-overcast">Force Overcast</label></div>
+                    <label class="form-label">Evaporation: <span id="disp-evap">Normal</span></label>
                     <input type="range" min="1" max="5" value="2" step="1" oninput="sim.updatePhysicsParams(this.value, 'evap')">
-                    <label class="form-label">Irrigation Speed: <span id="disp-flow">Normal</span></label>
+                    <label class="form-label">Irrigation Spd: <span id="disp-flow">Normal</span></label>
                     <input type="range" min="1" max="5" value="2" step="1" oninput="sim.updatePhysicsParams(this.value, 'flow')">
-                    <label class="form-label">Initial Moisture: <span id="disp-init">30-50</span>%</label>
+                    <label class="form-label">Init Moist: <span id="disp-init">30-50</span>%</label>
                     <input type="range" min="10" max="80" value="30" step="10" oninput="sim.params.initMoistBase=parseInt(this.value); document.getElementById('disp-init').innerText = this.value + '-' + (parseInt(this.value)+20)">
-                    <div style="font-size:10px; color:#e67e22;">*Requires Reset to apply</div>
                 </div>
                 <div class="form-section">
                     <span class="section-title"><i class="fa-solid fa-solar-panel"></i> Solar Config</span>
@@ -215,7 +281,7 @@
                 </div>
                 <div class="form-section">
                     <span class="section-title"><i class="fa-solid fa-rss"></i> LoRa Logic</span>
-                    <label class="form-label">Trigger Moist: <span id="disp-trig">40</span>%</label>
+                    <label class="form-label">Trig Moist: <span id="disp-trig">40</span>%</label>
                     <input type="range" min="20" max="60" value="40" oninput="sim.params.triggerMoist=parseInt(this.value); document.getElementById('disp-trig').innerText=this.value">
                     <label class="form-label">Target Moist: <span id="disp-target">70</span>%</label>
                     <input type="range" min="60" max="90" value="70" oninput="sim.params.targetMoist=parseInt(this.value); document.getElementById('disp-target').innerText=this.value">
@@ -225,7 +291,7 @@
 
         <div class="panel-box field-wrapper">
             <div class="panel-header" style="display:flex; justify-content:space-between">
-                <span>Test Plot (6x6 LoRa Nodes)</span>
+                <span>Test Plot (LoRa Grid)</span>
                 <span id="active-nodes" style="color:var(--primary)">Active: 0/36</span>
             </div>
             <div class="farm-grid" id="farm-grid"></div>
@@ -239,22 +305,19 @@
                     <div class="comp-info"><h4>PV Array</h4><p id="txt-solar">0 W | 0 V</p></div>
                     <div class="status-dot" id="dot-solar"></div>
                 </div>
-
                 <div class="comp-card" id="card-batt" onmousemove="sim.showCompTooltip(event, 'battery')" onmouseleave="sim.hideCompTooltip()">
                     <div class="comp-icon"><i class="fa-solid fa-car-battery" style="color:#2c3e50"></i></div>
-                    <div class="comp-info"><h4>Main Battery</h4><p id="txt-batt">100% | 12.8V</p></div>
+                    <div class="comp-info"><h4>Battery</h4><p id="txt-batt">100% | 12.8V</p></div>
                     <div class="status-dot on"></div>
                 </div>
-
                 <div class="comp-card" id="card-pump" onmousemove="sim.showCompTooltip(event, 'pump')" onmouseleave="sim.hideCompTooltip()">
                     <div class="comp-icon"><i class="fa-solid fa-faucet-drip" style="color:var(--primary)"></i></div>
                     <div class="comp-info"><h4>Main Pump</h4><p id="txt-pump">OFF | 0 L/min</p></div>
                     <div class="status-dot" id="dot-pump"></div>
                 </div>
-
                 <div class="comp-card" id="card-gateway" onmousemove="sim.showCompTooltip(event, 'gateway')" onmouseleave="sim.hideCompTooltip()">
                     <div class="comp-icon"><i class="fa-solid fa-wifi" style="color:var(--lora)"></i></div>
-                    <div class="comp-info"><h4>LoRa Gateway</h4><p>Listening...</p></div>
+                    <div class="comp-info"><h4>Gateway</h4><p>Online</p></div>
                     <div class="status-dot on"></div>
                 </div>
             </div>
@@ -263,9 +326,9 @@
 
     <div class="log-wrapper">
         <div class="log-header" onclick="sim.toggleLogPanel()">
-            <span><i class="fa-solid fa-terminal"></i> System Event Log</span>
+            <span><i class="fa-solid fa-terminal"></i> Log</span>
             <div class="log-tools">
-                <button class="log-btn" onclick="event.stopPropagation(); sim.clearLog()"><i class="fa-solid fa-trash"></i> Clear</button>
+                <button class="log-btn" onclick="event.stopPropagation(); sim.clearLog()"><i class="fa-solid fa-trash"></i></button>
                 <button class="log-btn toggle" id="log-toggle-btn"><i class="fa-solid fa-chevron-down"></i></button>
             </div>
         </div>
@@ -287,7 +350,7 @@
             constructor() {
                 this.timer = null;
                 this.isRunning = false;
-                this.hoveredComp = null; // 追踪当前悬停的组件，实现实时刷新
+                this.hoveredComp = null;
                 
                 this.state = {
                     time: 6 * 60,
@@ -305,15 +368,19 @@
                 this.initNodes();
             }
 
-            // --- 新增：Tooltip 逻辑 ---
             showCompTooltip(e, type) {
                 this.hoveredComp = type;
-                this.updateTooltipContent(type); // 立即生成内容
-                
+                this.updateTooltipContent(type); 
                 const tt = document.getElementById('global-tooltip');
                 tt.style.display = 'block';
-                tt.style.left = (e.clientX + 15) + 'px';
-                tt.style.top = (e.clientY + 15) + 'px';
+                // Mobile adjustment: center if screen small
+                if(window.innerWidth < 768) {
+                    tt.style.left = '5%';
+                    tt.style.top = (e.clientY + 20) + 'px';
+                } else {
+                    tt.style.left = (e.clientX + 15) + 'px';
+                    tt.style.top = (e.clientY + 15) + 'px';
+                }
             }
 
             hideCompTooltip() {
@@ -321,12 +388,9 @@
                 document.getElementById('global-tooltip').style.display = 'none';
             }
 
-            // 动态生成 Tooltip 内容，支持实时数据刷新
             updateTooltipContent(type) {
                 const tt = document.getElementById('global-tooltip');
                 let html = '';
-
-                // 计算光照强度用于显示 (复用 tick 里的逻辑)
                 const h = this.state.time / 60;
                 let irradiance = 0;
                 if (!this.params.forceCloudy && h > this.params.sunrise && h < this.params.sunset) {
@@ -337,43 +401,19 @@
 
                 if (type === 'solar') {
                     const autonomy = this.calculateAutonomy();
-                    html = `
-                        <div class="spec-row"><span>Model:</span><span>${COMPONENT_SPECS.solar.model}</span></div>
-                        <div class="spec-row"><span>Rating:</span><span>${COMPONENT_SPECS.solar.pmax} Wp</span></div>
-                        <div class="spec-row"><span>Output:</span><span>${this.state.solarW.toFixed(1)} W</span></div>
-                        <div class="spec-row"><span>Irrad:</span><span>${irradiance.toFixed(0)} W/m²</span></div>
-                        <div class="spec-row highlight-row"><span>Est. Runtime:</span><span>${autonomy}</span></div>
-                    `;
+                    html = `<div class="spec-row"><span>Model:</span><span>${COMPONENT_SPECS.solar.model}</span></div><div class="spec-row"><span>Rating:</span><span>${COMPONENT_SPECS.solar.pmax} Wp</span></div><div class="spec-row"><span>Output:</span><span>${this.state.solarW.toFixed(1)} W</span></div><div class="spec-row"><span>Irrad:</span><span>${irradiance.toFixed(0)} W/m²</span></div><div class="spec-row highlight-row"><span>Est. Runtime:</span><span>${autonomy}</span></div>`;
                 } else if (type === 'battery') {
                     const autonomy = this.calculateAutonomy();
-                    html = `
-                        <div class="spec-row"><span>Model:</span><span>${COMPONENT_SPECS.battery.model}</span></div>
-                        <div class="spec-row"><span>Cap:</span><span>${COMPONENT_SPECS.battery.cap} Ah</span></div>
-                        <div class="spec-row"><span>SOC:</span><span>${this.state.battAh.toFixed(1)}%</span></div>
-                        <div class="spec-row"><span>Voltage:</span><span>${this.state.battV.toFixed(1)} V</span></div>
-                        <div class="spec-row highlight-row"><span>Est. Runtime:</span><span>${autonomy}</span></div>
-                    `;
+                    html = `<div class="spec-row"><span>Model:</span><span>${COMPONENT_SPECS.battery.model}</span></div><div class="spec-row"><span>Cap:</span><span>${COMPONENT_SPECS.battery.cap} Ah</span></div><div class="spec-row"><span>SOC:</span><span>${this.state.battAh.toFixed(1)}%</span></div><div class="spec-row"><span>Voltage:</span><span>${this.state.battV.toFixed(1)} V</span></div><div class="spec-row highlight-row"><span>Est. Runtime:</span><span>${autonomy}</span></div>`;
                 } else if (type === 'pump') {
                     const power = this.state.activeValves > 0 ? COMPONENT_SPECS.pump.p_rate : 0;
-                    html = `
-                        <div class="spec-row"><span>Model:</span><span>${COMPONENT_SPECS.pump.model}</span></div>
-                        <div class="spec-row"><span>Max Flow:</span><span>${COMPONENT_SPECS.pump.flow_max} L/min</span></div>
-                        <div class="spec-row"><span>Flow:</span><span>${this.state.pumpFlow.toFixed(2)} L/min</span></div>
-                        <div class="spec-row"><span>Power:</span><span>${power} W</span></div>
-                    `;
+                    html = `<div class="spec-row"><span>Model:</span><span>${COMPONENT_SPECS.pump.model}</span></div><div class="spec-row"><span>Max Flow:</span><span>${COMPONENT_SPECS.pump.flow_max} L/min</span></div><div class="spec-row"><span>Flow:</span><span>${this.state.pumpFlow.toFixed(2)} L/min</span></div><div class="spec-row"><span>Power:</span><span>${power} W</span></div>`;
                 } else if (type === 'gateway') {
-                    html = `
-                        <div class="spec-row"><span>Model:</span><span>SX1302-GW</span></div>
-                        <div class="spec-row"><span>Freq:</span><span>868 MHz</span></div>
-                        <div class="spec-row"><span>Active Nodes:</span><span>${this.state.activeValves} / 36</span></div>
-                        <div class="spec-row"><span>Status:</span><span>Online</span></div>
-                    `;
+                    html = `<div class="spec-row"><span>Model:</span><span>SX1302-GW</span></div><div class="spec-row"><span>Freq:</span><span>868 MHz</span></div><div class="spec-row"><span>Active Nodes:</span><span>${this.state.activeValves} / 36</span></div><div class="spec-row"><span>Status:</span><span>Online</span></div>`;
                 }
-
                 tt.innerHTML = html;
             }
 
-            // --- 原有逻辑 ---
             toggleLogPanel() { document.body.classList.toggle('log-hidden'); }
             clearLog() { document.getElementById('log-console').innerHTML = ''; }
 
@@ -399,7 +439,6 @@
                     const div = document.createElement('div');
                     div.className = 'crop-unit';
                     div.id = `node-${i}`;
-                    // 修改点：Node 的 Tooltip 逻辑已经用全局 showNodeTooltip 了，这里无需改动
                     div.innerHTML = `<i class="fa-solid fa-wifi lora-ant"></i><div class="nozzle"></div><div class="moist-bar"><div class="moist-val" style="width:${node.moist}%"></div></div><span style="font-size:9px; margin-top:2px; color:#666">${Math.floor(node.moist)}%</span><div style="position:absolute; width:100%; height:100%; top:0; left:0" onmousemove="sim.showNodeTooltip(event, ${i})" onmouseleave="sim.hideNodeTooltip()"></div>`;
                     grid.appendChild(div);
                 }
@@ -410,13 +449,13 @@
                 if(this.isRunning) {
                     clearInterval(this.timer);
                     this.isRunning = false;
-                    btn.innerHTML = '<i class="fa-solid fa-play"></i> Run';
+                    btn.innerHTML = '<i class="fa-solid fa-play"></i>';
                     btn.classList.remove('stop');
                     this.log("System Paused.");
                 } else {
                     this.timer = setInterval(() => this.tick(), 1000);
                     this.isRunning = true;
-                    btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
+                    btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
                     btn.classList.add('stop');
                     this.log("System Running.");
                 }
@@ -431,10 +470,10 @@
                 this.lastHourAvgConsumptionW = 0;
                 this.initNodes();
                 this.updateUI(0); 
-                document.getElementById('btn-toggle').innerHTML = '<i class="fa-solid fa-play"></i> Run';
+                document.getElementById('btn-toggle').innerHTML = '<i class="fa-solid fa-play"></i>';
                 document.getElementById('btn-toggle').classList.remove('stop');
                 this.clearLog(); 
-                this.log("System Reset Complete. New parameters applied.");
+                this.log("System Reset.");
             }
 
             tick() {
@@ -522,10 +561,20 @@
                 const m = this.state.time % 60;
                 const timeStr = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
                 document.getElementById('sim-clock').innerText = timeStr;
-                document.getElementById('sim-weather').innerText = this.params.forceCloudy ? "Overcast" : (irradiance > 100 ? "Sunny" : "Night");
-                document.getElementById('sun-icon').className = this.params.forceCloudy ? "fa-solid fa-cloud" : (irradiance > 100 ? "fa-solid fa-sun" : "fa-solid fa-moon");
+                
+                // 修复天气图标显示逻辑
+                if (this.params.forceCloudy) {
+                    document.getElementById('sim-weather').innerText = "Overcast";
+                    document.getElementById('sun-icon').className = "fa-solid fa-cloud";
+                } else if (irradiance > 100) {
+                    document.getElementById('sim-weather').innerText = "Sunny";
+                    document.getElementById('sun-icon').className = "fa-solid fa-sun";
+                } else {
+                    document.getElementById('sim-weather').innerText = "Night";
+                    document.getElementById('sun-icon').className = "fa-solid fa-moon";
+                }
 
-                // 更新卡片上的静态文本
+                const autonomyStr = this.calculateAutonomy();
                 document.getElementById('txt-solar').innerText = `${this.state.solarW.toFixed(1)} W | ${irradiance.toFixed(0)} W/m²`;
                 document.getElementById('dot-solar').className = `status-dot ${this.state.solarW > 5 ? 'on' : ''}`;
                 document.getElementById('txt-batt').innerText = `${this.state.battAh.toFixed(1)}% | ${this.state.battV.toFixed(1)}V`;
@@ -545,7 +594,6 @@
                     else { el.classList.remove('watering'); el.classList.remove('active'); }
                 });
 
-                // 关键点：如果当前正在悬停，刷新 Tooltip 内容实现实时数据更新
                 if (this.hoveredComp) {
                     this.updateTooltipContent(this.hoveredComp);
                 }
@@ -556,14 +604,11 @@
                 const h = Math.floor(this.state.time / 60);
                 const m = this.state.time % 60;
                 const timeStr = `[${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}]`;
-                
                 const line = document.createElement('div');
                 line.className = 'log-line';
                 line.innerHTML = `<span class="log-time">${timeStr}</span> ${msg}`;
-                
                 box.appendChild(line);
                 box.scrollTop = box.scrollHeight;
-                
                 if(box.children.length > 200) box.removeChild(box.firstChild);
             }
 
@@ -576,28 +621,23 @@
                 box.scrollTop = box.scrollHeight;
             }
 
-            // Node 的 Tooltip 逻辑，也可以改为使用 global-tooltip，这里暂保持原样，因为它是 position absolute 跟随鼠标的
             showNodeTooltip(e, id) {
-                // 如果需要更稳定的表现，也可以改造这里使用 global-tooltip，代码类似 showCompTooltip
                 const tt = document.getElementById('global-tooltip');
                 const node = this.state.zones[id];
                 tt.style.display = 'block';
-                tt.style.left = (e.clientX + 15) + 'px';
-                tt.style.top = (e.clientY + 15) + 'px';
+                if(window.innerWidth < 768) {
+                    tt.style.left = '5%';
+                    tt.style.top = (e.clientY + 20) + 'px';
+                } else {
+                    tt.style.left = (e.clientX + 15) + 'px';
+                    tt.style.top = (e.clientY + 15) + 'px';
+                }
                 
-                const html = `
-                    <div class="spec-row"><span>ID:</span><span>N-${String(id+1).padStart(2,'0')}</span></div>
-                    <div class="spec-row"><span>Moist:</span><span>${node.moist.toFixed(1)}%</span></div>
-                    <div class="spec-row"><span>Valve:</span><span style="color:${node.isOpen ? 'var(--success)' : '#ccc'}">${node.isOpen ? "OPEN" : "CLOSED"}</span></div>
-                    <div class="spec-row"><span>Signal:</span><span>${node.rssi} dBm</span></div>
-                    <div class="spec-row"><span>Power:</span><span>${node.isOpen ? COMPONENT_SPECS.node.p_active : COMPONENT_SPECS.node.p_idle} W</span></div>
-                `;
+                const html = `<div class="spec-row"><span>ID:</span><span>N-${String(id+1).padStart(2,'0')}</span></div><div class="spec-row"><span>Moist:</span><span>${node.moist.toFixed(1)}%</span></div><div class="spec-row"><span>Valve:</span><span style="color:${node.isOpen ? 'var(--success)' : '#ccc'}">${node.isOpen ? "OPEN" : "CLOSED"}</span></div><div class="spec-row"><span>Signal:</span><span>${node.rssi} dBm</span></div><div class="spec-row"><span>Power:</span><span>${node.isOpen ? COMPONENT_SPECS.node.p_active : COMPONENT_SPECS.node.p_idle} W</span></div>`;
                 tt.innerHTML = html;
             }
 
-            hideNodeTooltip() { 
-                document.getElementById('global-tooltip').style.display = 'none'; 
-            }
+            hideNodeTooltip() { document.getElementById('global-tooltip').style.display = 'none'; }
         }
 
         const sim = new Simulation();
