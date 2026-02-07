@@ -37,7 +37,6 @@
 
         body.log-hidden { grid-template-rows: 60px 1fr 30px; }
 
-        /* --- Header --- */
         header {
             background: var(--panel-bg);
             border-bottom: var(--border);
@@ -56,7 +55,6 @@
         button.active { background: var(--success); color: white; border-color: var(--success); }
         button.stop { background: var(--danger); color: white; border-color: var(--danger); }
 
-        /* --- Main Layout --- */
         .main-workspace {
             display: grid;
             grid-template-columns: 320px 1fr 320px;
@@ -71,7 +69,6 @@
         }
         .panel-header { font-size: 14px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; margin-bottom: 10px; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; flex-shrink: 0; }
 
-        /* --- Settings Panel --- */
         .settings-form { display: flex; flex-direction: column; gap: 15px; overflow-y: auto; padding-right: 5px; flex: 1; }
         .form-section { background: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px solid #eee; flex-shrink: 0; }
         .section-title { font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 8px; display: block; border-bottom: 1px dashed #ddd; padding-bottom: 4px;}
@@ -79,7 +76,6 @@
         input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; }
         input[type="checkbox"] { accent-color: var(--danger); transform: scale(1.2); cursor: pointer; }
 
-        /* --- Farm Grid --- */
         .field-wrapper { overflow-y: auto; }
         .farm-grid {
             display: grid;
@@ -110,9 +106,8 @@
         .moist-bar { width: 80%; height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
         .moist-val { height: 100%; background: var(--success); transition: width 0.5s; }
 
-        /* --- Topo Visual (修改版: 上半部分) --- */
         .topo-visual {
-            flex: 1; min-height: 0; /* 允许压缩 */
+            flex: 1; min-height: 0;
             display: flex; flex-direction: column; gap: 8px; 
             overflow-y: auto; margin-bottom: 10px;
         }
@@ -128,7 +123,6 @@
         .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #ccc; margin-left: auto; }
         .status-dot.on { background: var(--success); box-shadow: 0 0 5px var(--success); }
 
-        /* --- Stats Visual (新增: 下半部分) --- */
         .stats-divider { border-top: 2px dashed #e1e4e8; margin: 5px 0 10px 0; }
         .stats-container {
             flex: 1; min-height: 0;
@@ -143,13 +137,11 @@
         .stat-label { font-size: 11px; color: #7f8c8d; font-weight: 600; text-transform: uppercase; }
         .stat-value { font-size: 14px; font-weight: 700; color: #2c3e50; }
         
-        /* Sparkline Chart */
         .spark-wrapper { height: 25px; width: 100%; position: relative; border-bottom: 1px solid #eee; }
         .spark-svg { width: 100%; height: 100%; overflow: hidden; }
         .spark-line { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
         .spark-area { stroke: none; opacity: 0.1; }
 
-        /* --- Tooltip (Global) --- */
         #global-tooltip {
             position: fixed; z-index: 9999;
             background: rgba(44, 62, 80, 0.95); color: white;
@@ -161,7 +153,6 @@
         .spec-row span:first-child { color: #bdc3c7; }
         .highlight-row { color: var(--energy); font-weight: bold; border-top: 1px solid #666; padding-top: 5px; margin-top: 5px; }
 
-        /* --- Log Panel --- */
         .log-wrapper {
             background: #2c3e50; display: flex; flex-direction: column; height: 100%; 
             border-top: 4px solid var(--primary); transition: all 0.3s; z-index: 500;
@@ -186,7 +177,6 @@
 
         @keyframes pulse { 0% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.5; transform: scale(1); } }
 
-        /* Mobile CSS */
         @media (max-width: 1024px) {
             body { display: block; height: auto; min-height: 100vh; overflow-y: auto; }
             header { position: sticky; top: 0; width: 100%; height: 60px; padding: 0 10px; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); }
@@ -381,14 +371,11 @@
                     zones: [] 
                 };
                 
-                // 实时统计
                 this.hourlyStats = { waterL: 0, energyInWh: 0, energyOutWh: 0 };
                 this.lastHourAvgConsumptionW = 0; 
                 
-                // 全局累计统计
                 this.globalStats = { water: 0, energyIn: 0, energyOut: 0 };
                 
-                // 历史趋势数据 (最近6小时)
                 this.history = {
                     water: [0,0,0,0,0,0],
                     energyIn: [0,0,0,0,0,0],
@@ -403,7 +390,6 @@
                 this.initNodes();
             }
 
-            // --- Tooltip & UI Helpers ---
             showCompTooltip(e, type) {
                 this.hoveredComp = type;
                 this.updateTooltipContent(type); 
@@ -464,8 +450,6 @@
                 }
             }
 
-            // --- Simulation Logic ---
-
             initNodes() {
                 const grid = document.getElementById('farm-grid');
                 grid.innerHTML = '';
@@ -510,7 +494,7 @@
                 this.lastHourAvgConsumptionW = 0;
                 this.initNodes();
                 this.updateUI(0); 
-                this.updateStatsUI(); // Reset Stats UI
+                this.updateStatsUI(); 
                 document.getElementById('btn-toggle').innerHTML = '<i class="fa-solid fa-play"></i> Run';
                 document.getElementById('btn-toggle').classList.remove('stop');
                 this.clearLog(); 
@@ -576,7 +560,6 @@
                 this.state.battAh = Math.max(0, Math.min(100, this.state.battAh - drainAh + chargeAh));
                 this.state.battV = 11.5 + (this.state.battAh/100)*1.8 + (this.state.solarW>0 ? 0.5 : 0);
 
-                // Stats Accumulation
                 const eIn = currentChargeW * (1/60);
                 const eOut = currentLoadW * (1/60);
                 
@@ -597,7 +580,6 @@
                 this.lastHourAvgConsumptionW = this.hourlyStats.energyOutWh;
                 this.logAudit(`[Hourly Audit ${fmtTime}] Water: ${this.hourlyStats.waterL.toFixed(2)} L | Gen: ${this.hourlyStats.energyInWh.toFixed(2)} Wh | Cons: ${this.hourlyStats.energyOutWh.toFixed(2)} Wh`);
                 
-                // Update History Arrays (Shift Left)
                 this.history.water.push(this.hourlyStats.waterL);
                 this.history.water.shift();
                 
@@ -609,7 +591,6 @@
 
                 this.hourlyStats = { waterL: 0, energyInWh: 0, energyOutWh: 0 };
                 
-                // Trigger Stats UI Update (including Charts)
                 this.updateStatsUI();
             }
 
@@ -622,16 +603,14 @@
                 return `${hoursLeft.toFixed(1)} Hours`;
             }
 
-            // --- Stats & Sparkline Drawing ---
             
             getSparklinePath(data) {
                 if (!data || data.length === 0) return "";
-                const max = Math.max(...data, 1); // Avoid div by zero
+                const max = Math.max(...data, 1); 
                 const min = 0;
                 const width = 100;
                 const height = 100;
                 
-                // Generate points
                 let points = data.map((val, i) => {
                     const x = (i / (data.length - 1)) * width;
                     const y = height - ((val - min) / (max - min)) * height;
@@ -642,18 +621,16 @@
             }
 
             getSparklineSVG(data) {
-                // Convert simple point list to SVG Path command
                 if (!data || data.length === 0) return { line: "", area: "" };
                 const max = Math.max(...data, 0.1);
                 const points = data.map((val, i) => {
                     const x = (i / (data.length - 1)) * 100;
-                    const y = 100 - (val / max) * 80; // keep some padding at top (80% height)
+                    const y = 100 - (val / max) * 80; 
                     return {x, y};
                 });
 
                 let d = `M ${points[0].x} ${points[0].y}`;
                 for(let i=1; i<points.length; i++) {
-                    // Simple line smoothing or straight lines
                     d += ` L ${points[i].x} ${points[i].y}`;
                 }
 
@@ -662,13 +639,11 @@
             }
 
             updateStatsUI() {
-                // Update Global Texts
                 document.getElementById('stat-days').innerText = `${this.state.dayCount} Days`;
                 document.getElementById('stat-water').innerText = `${(this.globalStats.water).toFixed(1)} L`;
                 document.getElementById('stat-eng-out').innerText = `${(this.globalStats.energyOut).toFixed(1)} Wh`;
                 document.getElementById('stat-eng-in').innerText = `${(this.globalStats.energyIn).toFixed(1)} Wh`;
 
-                // Draw Charts
                 const draw = (idPrefix, data) => {
                     const paths = this.getSparklineSVG(data);
                     document.getElementById(`${idPrefix}-line`).setAttribute('d', paths.line);
@@ -697,8 +672,6 @@
                     document.getElementById('sun-icon').className = "fa-solid fa-moon";
                 }
 
-                // document.getElementById('txt-solar').innerText = `${this.state.solarW.toFixed(1)} W | ${irradiance.toFixed(0)} W/m²`;
-                // Simplified Solar Display for tighter space
                 document.getElementById('txt-solar').innerText = `${this.state.solarW.toFixed(0)} W | ${irradiance.toFixed(0)} W/m²`;
 
                 document.getElementById('dot-solar').className = `status-dot ${this.state.solarW > 5 ? 'on' : ''}`;
