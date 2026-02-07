@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Smart LoRa Irrigation Digital Twin v2.7 (Mobile Responsive)</title>
+    <title>Smart LoRa Irrigation Digital Twin v2.8 (Mobile Ready)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -23,7 +23,7 @@
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        /* --- 桌面端默认布局 (保持不变) --- */
+        /* --- 桌面端基础布局 (保持原逻辑) --- */
         body {
             font-family: 'Segoe UI', 'Roboto', monospace;
             background-color: var(--bg-color);
@@ -128,7 +128,7 @@
         .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; margin-left: auto; }
         .status-dot.on { background: var(--success); box-shadow: 0 0 5px var(--success); }
 
-        /* --- Tooltip --- */
+        /* --- Tooltip (Global) --- */
         #global-tooltip {
             position: fixed; z-index: 9999;
             background: rgba(44, 62, 80, 0.95); color: white;
@@ -159,79 +159,75 @@
         .log-time { color: var(--energy); margin-right: 10px; font-weight: bold; }
         .log-info { color: #3498db; }
         .log-audit { color: #2ecc71; font-weight: bold; background: rgba(46, 204, 113, 0.1); padding: 5px; border-left: 3px solid #2ecc71; margin: 5px 0; }
+        
         body.log-hidden .log-console { display: none; }
         body.log-hidden .log-btn.toggle i { transform: rotate(180deg); }
 
         @keyframes pulse { 0% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.5; transform: scale(1); } }
 
         /* ========================================= */
-        /* --- 响应式设计 (Responsive Design) --- */
+        /* --- 移动端响应式核心优化 (Mobile CSS) --- */
         /* ========================================= */
         @media (max-width: 1024px) {
+            /* 1. 全局布局改为流式，允许滚动 */
             body {
-                display: flex;
-                flex-direction: column;
-                height: auto; /* 允许 Body 随内容长高 */
-                overflow-y: auto; /* 开启整个页面的垂直滚动 */
+                display: block; /* 取消 Grid，允许自然堆叠 */
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto; /* 开启 Body 滚动 */
             }
 
+            /* 2. Header 保持吸顶 */
             header {
-                position: sticky; /* 顶栏吸顶 */
-                top: 0;
-                padding: 0 10px;
+                position: sticky; top: 0; width: 100%;
+                height: 60px; padding: 0 10px;
+                background: rgba(255,255,255,0.95); backdrop-filter: blur(5px);
             }
-            
             .brand { font-size: 16px; }
-            .brand span { display: none; /* 手机端隐藏版本号以节省空间 */ }
+            .brand span { display: none; /* 隐藏版本号省空间 */ }
             .sim-controls select { max-width: 80px; }
 
-            /* 将主工作区改为垂直堆叠 */
+            /* 3. 主工作区垂直排列 */
             .main-workspace {
-                display: flex;
-                flex-direction: column;
-                height: auto;
-                overflow: visible;
-                padding: 10px;
-                gap: 15px;
+                display: flex; flex-direction: column;
+                padding: 10px; gap: 15px; height: auto;
             }
 
-            /* 通用面板改为自适应高度 */
+            /* 4. 面板通用样式调整 */
             .panel-box {
-                height: auto;
-                overflow: visible;
-                min-height: 250px; /* 防止太扁 */
+                height: auto; min-height: 250px;
+                overflow: visible; /* 允许内容撑开 */
             }
 
-            /* 核心修改：利用 Order 属性调整显示顺序 */
-            /* 1. 将试验田 (Field) 放在最前面，因为它是视觉核心 */
+            /* 5. 核心排序：试验田置顶 */
             .field-wrapper {
-                order: 1;
-                height: 400px; /* 给试验田一个固定的足够高度 */
+                order: 1; 
+                height: 400px; /* 给试验田固定高度，保证正方形显示 */
+                min-height: 400px;
             }
 
-            /* 2. 组件状态放在第二位 */
-            .panel-box:nth-child(3) { /* 也就是原来的右侧栏 */
+            /* 组件卡片区 */
+            .panel-box:nth-child(3) { /* System Components */
                 order: 2;
-                max-height: 400px; /* 限制高度防止过长 */
+                max-height: 400px;
             }
 
-            /* 3. 设置面板放在最后 */
-            .panel-box:nth-child(1) { /* 也就是原来的左侧栏 */
+            /* 设置区放最后 */
+            .panel-box:nth-child(1) { /* Settings */
                 order: 3;
             }
 
-            /* 4. 日志放在最底端 */
+            /* 6. 日志区作为页脚 */
             .log-wrapper {
-                order: 4;
-                height: 300px; /* 手机端日志固定高度 */
-                flex-shrink: 0;
+                height: 300px; /* 固定高度 */
+                position: relative;
+                margin-top: 20px;
             }
 
-            /* 修复 Tooltip 在手机端的位置逻辑 */
+            /* 7. 手机端 Tooltip 位置修正 */
             #global-tooltip {
-                width: 90%; /* 手机端 Tooltip 宽度自适应 */
-                left: 5% !important;
-                /* 如果在手机端悬停不便，可以考虑改为点击触发，但保持现状触摸也能用 */
+                width: 90%; left: 5% !important;
+                margin-top: 20px; /* 避免手指遮挡 */
             }
         }
     </style>
@@ -241,20 +237,20 @@
 
     <header>
         <div class="brand">
-            <i class="fa-solid fa-wheat-awn" style="color:var(--success)"></i> AgriTech Pro <span>LoRaWAN Edition v2.7</span>
+            <i class="fa-solid fa-wheat-awn" style="color:var(--success)"></i> AgriTech Pro <span>LoRaWAN Edition v2.8</span>
         </div>
         <div style="font-size: 14px; color: #555;">
-            <i class="fa-regular fa-sun" id="sun-icon"></i> <span id="sim-clock">Day 0 - 06:00</span>
+            <i class="fa-regular fa-sun" id="sun-icon"></i> <span id="sim-clock">Day 0 - 06:00</span> <span style="margin-left:15px; font-weight:bold" id="sim-weather">Sunny</span>
         </div>
         <div class="sim-controls">
             <select id="speed-selector">
                 <option value="1">1 min/s</option>
                 <option value="5">5 min/s</option>
                 <option value="10" selected>10 min/s</option>
-                <option value="60">1 Hr/s</option>
+                <option value="60">1 Hr/s (Ultra)</option>
             </select>
-            <button onclick="sim.toggle()" id="btn-toggle" class="active"><i class="fa-solid fa-play"></i></button>
-            <button onclick="sim.reset()" class="stop"><i class="fa-solid fa-rotate-right"></i></button>
+            <button onclick="sim.toggle()" id="btn-toggle" class="active"><i class="fa-solid fa-play"></i> Run</button>
+            <button onclick="sim.reset()" class="stop"><i class="fa-solid fa-rotate-right"></i> Reset</button>
         </div>
     </header>
 
@@ -265,12 +261,13 @@
                 <div class="form-section" style="border-left: 3px solid var(--danger);">
                     <span class="section-title"><i class="fa-solid fa-flask"></i> Physics & Weather</span>
                     <div class="checkbox-row"><input type="checkbox" id="chk-overcast" onchange="sim.params.forceCloudy = this.checked"><label for="chk-overcast">Force Overcast</label></div>
-                    <label class="form-label">Evaporation: <span id="disp-evap">Normal</span></label>
+                    <label class="form-label">Evaporation Rate: <span id="disp-evap">Normal</span></label>
                     <input type="range" min="1" max="5" value="2" step="1" oninput="sim.updatePhysicsParams(this.value, 'evap')">
-                    <label class="form-label">Irrigation Spd: <span id="disp-flow">Normal</span></label>
+                    <label class="form-label">Irrigation Speed: <span id="disp-flow">Normal</span></label>
                     <input type="range" min="1" max="5" value="2" step="1" oninput="sim.updatePhysicsParams(this.value, 'flow')">
-                    <label class="form-label">Init Moist: <span id="disp-init">30-50</span>%</label>
+                    <label class="form-label">Initial Moisture: <span id="disp-init">30-50</span>%</label>
                     <input type="range" min="10" max="80" value="30" step="10" oninput="sim.params.initMoistBase=parseInt(this.value); document.getElementById('disp-init').innerText = this.value + '-' + (parseInt(this.value)+20)">
+                    <div style="font-size:10px; color:#e67e22;">*Requires Reset to apply</div>
                 </div>
                 <div class="form-section">
                     <span class="section-title"><i class="fa-solid fa-solar-panel"></i> Solar Config</span>
@@ -281,7 +278,7 @@
                 </div>
                 <div class="form-section">
                     <span class="section-title"><i class="fa-solid fa-rss"></i> LoRa Logic</span>
-                    <label class="form-label">Trig Moist: <span id="disp-trig">40</span>%</label>
+                    <label class="form-label">Trigger Moist: <span id="disp-trig">40</span>%</label>
                     <input type="range" min="20" max="60" value="40" oninput="sim.params.triggerMoist=parseInt(this.value); document.getElementById('disp-trig').innerText=this.value">
                     <label class="form-label">Target Moist: <span id="disp-target">70</span>%</label>
                     <input type="range" min="60" max="90" value="70" oninput="sim.params.targetMoist=parseInt(this.value); document.getElementById('disp-target').innerText=this.value">
@@ -291,7 +288,7 @@
 
         <div class="panel-box field-wrapper">
             <div class="panel-header" style="display:flex; justify-content:space-between">
-                <span>Test Plot (LoRa Grid)</span>
+                <span>Test Plot (6x6 LoRa Nodes)</span>
                 <span id="active-nodes" style="color:var(--primary)">Active: 0/36</span>
             </div>
             <div class="farm-grid" id="farm-grid"></div>
@@ -307,7 +304,7 @@
                 </div>
                 <div class="comp-card" id="card-batt" onmousemove="sim.showCompTooltip(event, 'battery')" onmouseleave="sim.hideCompTooltip()">
                     <div class="comp-icon"><i class="fa-solid fa-car-battery" style="color:#2c3e50"></i></div>
-                    <div class="comp-info"><h4>Battery</h4><p id="txt-batt">100% | 12.8V</p></div>
+                    <div class="comp-info"><h4>Main Battery</h4><p id="txt-batt">100% | 12.8V</p></div>
                     <div class="status-dot on"></div>
                 </div>
                 <div class="comp-card" id="card-pump" onmousemove="sim.showCompTooltip(event, 'pump')" onmouseleave="sim.hideCompTooltip()">
@@ -317,7 +314,7 @@
                 </div>
                 <div class="comp-card" id="card-gateway" onmousemove="sim.showCompTooltip(event, 'gateway')" onmouseleave="sim.hideCompTooltip()">
                     <div class="comp-icon"><i class="fa-solid fa-wifi" style="color:var(--lora)"></i></div>
-                    <div class="comp-info"><h4>Gateway</h4><p>Online</p></div>
+                    <div class="comp-info"><h4>LoRa Gateway</h4><p>Listening...</p></div>
                     <div class="status-dot on"></div>
                 </div>
             </div>
@@ -326,9 +323,9 @@
 
     <div class="log-wrapper">
         <div class="log-header" onclick="sim.toggleLogPanel()">
-            <span><i class="fa-solid fa-terminal"></i> Log</span>
+            <span><i class="fa-solid fa-terminal"></i> System Event Log</span>
             <div class="log-tools">
-                <button class="log-btn" onclick="event.stopPropagation(); sim.clearLog()"><i class="fa-solid fa-trash"></i></button>
+                <button class="log-btn" onclick="event.stopPropagation(); sim.clearLog()"><i class="fa-solid fa-trash"></i> Clear</button>
                 <button class="log-btn toggle" id="log-toggle-btn"><i class="fa-solid fa-chevron-down"></i></button>
             </div>
         </div>
@@ -350,7 +347,7 @@
             constructor() {
                 this.timer = null;
                 this.isRunning = false;
-                this.hoveredComp = null;
+                this.hoveredComp = null; 
                 
                 this.state = {
                     time: 6 * 60,
@@ -373,8 +370,8 @@
                 this.updateTooltipContent(type); 
                 const tt = document.getElementById('global-tooltip');
                 tt.style.display = 'block';
-                // Mobile adjustment: center if screen small
-                if(window.innerWidth < 768) {
+                // 触摸设备位置修正
+                if(window.innerWidth < 1024) {
                     tt.style.left = '5%';
                     tt.style.top = (e.clientY + 20) + 'px';
                 } else {
@@ -449,13 +446,13 @@
                 if(this.isRunning) {
                     clearInterval(this.timer);
                     this.isRunning = false;
-                    btn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    btn.innerHTML = '<i class="fa-solid fa-play"></i> Run';
                     btn.classList.remove('stop');
                     this.log("System Paused.");
                 } else {
                     this.timer = setInterval(() => this.tick(), 1000);
                     this.isRunning = true;
-                    btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
                     btn.classList.add('stop');
                     this.log("System Running.");
                 }
@@ -470,10 +467,10 @@
                 this.lastHourAvgConsumptionW = 0;
                 this.initNodes();
                 this.updateUI(0); 
-                document.getElementById('btn-toggle').innerHTML = '<i class="fa-solid fa-play"></i>';
+                document.getElementById('btn-toggle').innerHTML = '<i class="fa-solid fa-play"></i> Run';
                 document.getElementById('btn-toggle').classList.remove('stop');
                 this.clearLog(); 
-                this.log("System Reset.");
+                this.log("System Reset Complete.");
             }
 
             tick() {
@@ -562,7 +559,6 @@
                 const timeStr = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
                 document.getElementById('sim-clock').innerText = timeStr;
                 
-                // 修复天气图标显示逻辑
                 if (this.params.forceCloudy) {
                     document.getElementById('sim-weather').innerText = "Overcast";
                     document.getElementById('sun-icon').className = "fa-solid fa-cloud";
@@ -625,7 +621,7 @@
                 const tt = document.getElementById('global-tooltip');
                 const node = this.state.zones[id];
                 tt.style.display = 'block';
-                if(window.innerWidth < 768) {
+                if(window.innerWidth < 1024) {
                     tt.style.left = '5%';
                     tt.style.top = (e.clientY + 20) + 'px';
                 } else {
