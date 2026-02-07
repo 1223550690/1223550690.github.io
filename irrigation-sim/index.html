@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Smart LoRa Irrigation Digital Twin v2.8 (Mobile Ready)</title>
+    <title>Smart LoRa Irrigation Digital Twin v3.0 (Stats Edition)</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -23,7 +23,6 @@
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        /* --- 桌面端基础布局 (保持原逻辑) --- */
         body {
             font-family: 'Segoe UI', 'Roboto', monospace;
             background-color: var(--bg-color);
@@ -70,7 +69,7 @@
             box-shadow: var(--shadow); padding: 15px; display: flex; flex-direction: column;
             position: relative; overflow: hidden; height: 100%;
         }
-        .panel-header { font-size: 14px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; margin-bottom: 15px; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; flex-shrink: 0; }
+        .panel-header { font-size: 14px; color: var(--text-sub); font-weight: 700; text-transform: uppercase; margin-bottom: 10px; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; flex-shrink: 0; }
 
         /* --- Settings Panel --- */
         .settings-form { display: flex; flex-direction: column; gap: 15px; overflow-y: auto; padding-right: 5px; flex: 1; }
@@ -111,22 +110,44 @@
         .moist-bar { width: 80%; height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
         .moist-val { height: 100%; background: var(--success); transition: width 0.5s; }
 
-        /* --- Topo Visual --- */
+        /* --- Topo Visual (修改版: 上半部分) --- */
         .topo-visual {
-            flex: 1; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: flex-start;
-            padding: 10px; background: #fafafa; border-radius: 6px; overflow-y: auto;
+            flex: 1; min-height: 0; /* 允许压缩 */
+            display: flex; flex-direction: column; gap: 8px; 
+            overflow-y: auto; margin-bottom: 10px;
         }
         .comp-card {
-            width: 100%; background: white; border: 1px solid #eee; padding: 10px; border-radius: 6px;
+            width: 100%; background: white; border: 1px solid #eee; padding: 8px; border-radius: 6px;
             display: flex; align-items: center; gap: 10px; cursor: help; transition: all 0.2s; position: relative;
             flex-shrink: 0;
         }
         .comp-card:hover { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .comp-icon { width: 40px; height: 40px; background: #f1f2f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #555; }
-        .comp-info h4 { margin: 0; font-size: 13px; color: var(--text-main); }
-        .comp-info p { margin: 2px 0 0; font-size: 11px; color: var(--text-sub); }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; margin-left: auto; }
+        .comp-icon { width: 32px; height: 32px; background: #f1f2f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #555; }
+        .comp-info h4 { margin: 0; font-size: 12px; color: var(--text-main); }
+        .comp-info p { margin: 1px 0 0; font-size: 10px; color: var(--text-sub); }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #ccc; margin-left: auto; }
         .status-dot.on { background: var(--success); box-shadow: 0 0 5px var(--success); }
+
+        /* --- Stats Visual (新增: 下半部分) --- */
+        .stats-divider { border-top: 2px dashed #e1e4e8; margin: 5px 0 10px 0; }
+        .stats-container {
+            flex: 1; min-height: 0;
+            display: flex; flex-direction: column; gap: 8px;
+            overflow-y: auto;
+        }
+        .stat-item {
+            background: #fdfdfd; border: 1px solid #eee; border-radius: 6px;
+            padding: 8px 12px; display: flex; flex-direction: column;
+        }
+        .stat-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .stat-label { font-size: 11px; color: #7f8c8d; font-weight: 600; text-transform: uppercase; }
+        .stat-value { font-size: 14px; font-weight: 700; color: #2c3e50; }
+        
+        /* Sparkline Chart */
+        .spark-wrapper { height: 25px; width: 100%; position: relative; border-bottom: 1px solid #eee; }
+        .spark-svg { width: 100%; height: 100%; overflow: hidden; }
+        .spark-line { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+        .spark-area { stroke: none; opacity: 0.1; }
 
         /* --- Tooltip (Global) --- */
         #global-tooltip {
@@ -165,70 +186,20 @@
 
         @keyframes pulse { 0% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.5; transform: scale(1); } }
 
-        /* ========================================= */
-        /* --- 移动端响应式核心优化 (Mobile CSS) --- */
-        /* ========================================= */
+        /* Mobile CSS */
         @media (max-width: 1024px) {
-            /* 1. 全局布局改为流式，允许滚动 */
-            body {
-                display: block; /* 取消 Grid，允许自然堆叠 */
-                height: auto;
-                min-height: 100vh;
-                overflow-y: auto; /* 开启 Body 滚动 */
-            }
-
-            /* 2. Header 保持吸顶 */
-            header {
-                position: sticky; top: 0; width: 100%;
-                height: 60px; padding: 0 10px;
-                background: rgba(255,255,255,0.95); backdrop-filter: blur(5px);
-            }
+            body { display: block; height: auto; min-height: 100vh; overflow-y: auto; }
+            header { position: sticky; top: 0; width: 100%; height: 60px; padding: 0 10px; background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); }
             .brand { font-size: 16px; }
-            .brand span { display: none; /* 隐藏版本号省空间 */ }
+            .brand span { display: none; }
             .sim-controls select { max-width: 80px; }
-
-            /* 3. 主工作区垂直排列 */
-            .main-workspace {
-                display: flex; flex-direction: column;
-                padding: 10px; gap: 15px; height: auto;
-            }
-
-            /* 4. 面板通用样式调整 */
-            .panel-box {
-                height: auto; min-height: 250px;
-                overflow: visible; /* 允许内容撑开 */
-            }
-
-            /* 5. 核心排序：试验田置顶 */
-            .field-wrapper {
-                order: 1; 
-                height: 400px; /* 给试验田固定高度，保证正方形显示 */
-                min-height: 400px;
-            }
-
-            /* 组件卡片区 */
-            .panel-box:nth-child(3) { /* System Components */
-                order: 2;
-                max-height: 400px;
-            }
-
-            /* 设置区放最后 */
-            .panel-box:nth-child(1) { /* Settings */
-                order: 3;
-            }
-
-            /* 6. 日志区作为页脚 */
-            .log-wrapper {
-                height: 300px; /* 固定高度 */
-                position: relative;
-                margin-top: 20px;
-            }
-
-            /* 7. 手机端 Tooltip 位置修正 */
-            #global-tooltip {
-                width: 90%; left: 5% !important;
-                margin-top: 20px; /* 避免手指遮挡 */
-            }
+            .main-workspace { display: flex; flex-direction: column; padding: 10px; gap: 15px; height: auto; }
+            .panel-box { height: auto; min-height: 250px; overflow: visible; }
+            .field-wrapper { order: 1; height: 400px; min-height: 400px; }
+            .panel-box:nth-child(3) { order: 2; height: 600px; /* Increase height for stats */ }
+            .panel-box:nth-child(1) { order: 3; }
+            .log-wrapper { height: 300px; position: relative; margin-top: 20px; }
+            #global-tooltip { width: 90%; left: 5% !important; margin-top: 20px; }
         }
     </style>
 </head>
@@ -237,7 +208,7 @@
 
     <header>
         <div class="brand">
-            <i class="fa-solid fa-wheat-awn" style="color:var(--success)"></i> AgriTech Pro <span>LoRaWAN Edition v2.8</span>
+            <i class="fa-solid fa-wheat-awn" style="color:var(--success)"></i> Bristol Agri <span>LoRaWAN Edition v3.0</span>
         </div>
         <div style="font-size: 14px; color: #555;">
             <i class="fa-regular fa-sun" id="sun-icon"></i> <span id="sim-clock">Day 0 - 06:00</span> <span style="margin-left:15px; font-weight:bold" id="sim-weather">Sunny</span>
@@ -265,30 +236,30 @@
                     <input type="range" min="1" max="5" value="2" step="1" oninput="sim.updatePhysicsParams(this.value, 'evap')">
                     <label class="form-label">Irrigation Speed: <span id="disp-flow">Normal</span></label>
                     <input type="range" min="1" max="5" value="2" step="1" oninput="sim.updatePhysicsParams(this.value, 'flow')">
-                    <label class="form-label">Initial Moisture: <span id="disp-init">30-50</span>%</label>
-                    <input type="range" min="10" max="80" value="30" step="10" oninput="sim.params.initMoistBase=parseInt(this.value); document.getElementById('disp-init').innerText = this.value + '-' + (parseInt(this.value)+20)">
+                    <label class="form-label">Initial Moisture: <span id="disp-init">20-40</span>%</label>
+                    <input type="range" min="10" max="80" value="20" step="10" oninput="sim.params.initMoistBase=parseInt(this.value); document.getElementById('disp-init').innerText = this.value + '-' + (parseInt(this.value)+20)">
                     <div style="font-size:10px; color:#e67e22;">*Requires Reset to apply</div>
                 </div>
                 <div class="form-section">
                     <span class="section-title"><i class="fa-solid fa-solar-panel"></i> Solar Config</span>
                     <label class="form-label">Sunrise: <span id="disp-sunrise">06:00</span></label>
-                    <input type="range" min="4" max="9" value="6" oninput="sim.params.sunrise=parseInt(this.value); document.getElementById('disp-sunrise').innerText=this.value.toString().padStart(2,'0')+':00'">
-                    <label class="form-label">Sunset: <span id="disp-sunset">19:00</span></label>
-                    <input type="range" min="16" max="21" value="19" oninput="sim.params.sunset=parseInt(this.value); document.getElementById('disp-sunset').innerText=this.value.toString().padStart(2,'0')+':00'">
+                    <input type="range" min="4" max="10" value="6" oninput="sim.params.sunrise=parseInt(this.value); document.getElementById('disp-sunrise').innerText=this.value.toString().padStart(2,'0')+':00'">
+                    <label class="form-label">Sunset: <span id="disp-sunset">18:00</span></label>
+                    <input type="range" min="16" max="21" value="18" oninput="sim.params.sunset=parseInt(this.value); document.getElementById('disp-sunset').innerText=this.value.toString().padStart(2,'0')+':00'">
                 </div>
                 <div class="form-section">
                     <span class="section-title"><i class="fa-solid fa-rss"></i> LoRa Logic</span>
-                    <label class="form-label">Trigger Moist: <span id="disp-trig">40</span>%</label>
-                    <input type="range" min="20" max="60" value="40" oninput="sim.params.triggerMoist=parseInt(this.value); document.getElementById('disp-trig').innerText=this.value">
-                    <label class="form-label">Target Moist: <span id="disp-target">70</span>%</label>
-                    <input type="range" min="60" max="90" value="70" oninput="sim.params.targetMoist=parseInt(this.value); document.getElementById('disp-target').innerText=this.value">
+                    <label class="form-label">Trigger Moist: <span id="disp-trig">30</span>%</label>
+                    <input type="range" min="20" max="60" value="30" oninput="sim.params.triggerMoist=parseInt(this.value); document.getElementById('disp-trig').innerText=this.value">
+                    <label class="form-label">Target Moist: <span id="disp-target">60</span>%</label>
+                    <input type="range" min="40" max="90" value="60" oninput="sim.params.targetMoist=parseInt(this.value); document.getElementById('disp-target').innerText=this.value">
                 </div>
             </div>
         </div>
 
         <div class="panel-box field-wrapper">
             <div class="panel-header" style="display:flex; justify-content:space-between">
-                <span>Test Plot (6x6 LoRa Nodes)</span>
+                <span>Test Plot (6x6 LoRa Nodes, 5mx5m)</span>
                 <span id="active-nodes" style="color:var(--primary)">Active: 0/36</span>
             </div>
             <div class="farm-grid" id="farm-grid"></div>
@@ -304,18 +275,71 @@
                 </div>
                 <div class="comp-card" id="card-batt" onmousemove="sim.showCompTooltip(event, 'battery')" onmouseleave="sim.hideCompTooltip()">
                     <div class="comp-icon"><i class="fa-solid fa-car-battery" style="color:#2c3e50"></i></div>
-                    <div class="comp-info"><h4>Main Battery</h4><p id="txt-batt">100% | 12.8V</p></div>
+                    <div class="comp-info"><h4>Battery</h4><p id="txt-batt">100%</p></div>
                     <div class="status-dot on"></div>
                 </div>
                 <div class="comp-card" id="card-pump" onmousemove="sim.showCompTooltip(event, 'pump')" onmouseleave="sim.hideCompTooltip()">
                     <div class="comp-icon"><i class="fa-solid fa-faucet-drip" style="color:var(--primary)"></i></div>
-                    <div class="comp-info"><h4>Main Pump</h4><p id="txt-pump">OFF | 0 L/min</p></div>
+                    <div class="comp-info"><h4>Pump</h4><p id="txt-pump">OFF</p></div>
                     <div class="status-dot" id="dot-pump"></div>
                 </div>
                 <div class="comp-card" id="card-gateway" onmousemove="sim.showCompTooltip(event, 'gateway')" onmouseleave="sim.hideCompTooltip()">
                     <div class="comp-icon"><i class="fa-solid fa-wifi" style="color:var(--lora)"></i></div>
-                    <div class="comp-info"><h4>LoRa Gateway</h4><p>Listening...</p></div>
+                    <div class="comp-info"><h4>Gateway</h4><p>Online</p></div>
                     <div class="status-dot on"></div>
+                </div>
+            </div>
+
+            <div class="stats-divider"></div>
+
+            <div class="panel-header" style="border:none; margin-bottom:5px;">Historical Stats (6H Trend)</div>
+            <div class="stats-container">
+                
+                <div class="stat-item" style="flex-direction:row; align-items:center; justify-content:space-between; padding:12px;">
+                    <div>
+                        <div class="stat-label">System Uptime</div>
+                        <div class="stat-value" id="stat-days">0 Days</div>
+                    </div>
+                    <i class="fa-regular fa-clock" style="font-size:20px; color:#bdc3c7;"></i>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-meta">
+                        <span class="stat-label">Total Water</span>
+                        <span class="stat-value" id="stat-water" style="color:var(--primary)">0 L</span>
+                    </div>
+                    <div class="spark-wrapper">
+                        <svg class="spark-svg" preserveAspectRatio="none" viewBox="0 0 100 100">
+                            <path class="spark-area" id="spark-water-area" d="" fill="var(--primary)"></path>
+                            <path class="spark-line" id="spark-water-line" d="" stroke="var(--primary)"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-meta">
+                        <span class="stat-label">Total Energy Used</span>
+                        <span class="stat-value" id="stat-eng-out" style="color:#e74c3c">0 Wh</span>
+                    </div>
+                    <div class="spark-wrapper">
+                        <svg class="spark-svg" preserveAspectRatio="none" viewBox="0 0 100 100">
+                            <path class="spark-area" id="spark-out-area" d="" fill="#e74c3c"></path>
+                            <path class="spark-line" id="spark-out-line" d="" stroke="#e74c3c"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-meta">
+                        <span class="stat-label">Total Generation</span>
+                        <span class="stat-value" id="stat-eng-in" style="color:var(--energy)">0 Wh</span>
+                    </div>
+                    <div class="spark-wrapper">
+                        <svg class="spark-svg" preserveAspectRatio="none" viewBox="0 0 100 100">
+                            <path class="spark-area" id="spark-in-area" d="" fill="var(--energy)"></path>
+                            <path class="spark-line" id="spark-in-line" d="" stroke="var(--energy)"></path>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
@@ -351,26 +375,40 @@
                 
                 this.state = {
                     time: 6 * 60,
+                    dayCount: 0,
                     battAh: 100, battV: 12.8,
                     solarW: 0, pumpFlow: 0, activeValves: 0, 
                     zones: [] 
                 };
+                
+                // 实时统计
                 this.hourlyStats = { waterL: 0, energyInWh: 0, energyOutWh: 0 };
                 this.lastHourAvgConsumptionW = 0; 
+                
+                // 全局累计统计
+                this.globalStats = { water: 0, energyIn: 0, energyOut: 0 };
+                
+                // 历史趋势数据 (最近6小时)
+                this.history = {
+                    water: [0,0,0,0,0,0],
+                    energyIn: [0,0,0,0,0,0],
+                    energyOut: [0,0,0,0,0,0]
+                };
+
                 this.params = {
-                    sunrise: 6, sunset: 19, maxSun: 1000,
-                    triggerMoist: 40, targetMoist: 70,
-                    forceCloudy: false, evapFactor: 0.02, irrigFactor: 0.5, initMoistBase: 30
+                    sunrise: 6, sunset: 18, maxSun: 1000,
+                    triggerMoist: 30, targetMoist: 60,
+                    forceCloudy: false, evapFactor: 0.01, irrigFactor: 1.0, initMoistBase: 20
                 };
                 this.initNodes();
             }
 
+            // --- Tooltip & UI Helpers ---
             showCompTooltip(e, type) {
                 this.hoveredComp = type;
                 this.updateTooltipContent(type); 
                 const tt = document.getElementById('global-tooltip');
                 tt.style.display = 'block';
-                // 触摸设备位置修正
                 if(window.innerWidth < 1024) {
                     tt.style.left = '5%';
                     tt.style.top = (e.clientY + 20) + 'px';
@@ -426,6 +464,8 @@
                 }
             }
 
+            // --- Simulation Logic ---
+
             initNodes() {
                 const grid = document.getElementById('farm-grid');
                 grid.innerHTML = '';
@@ -462,11 +502,15 @@
                 clearInterval(this.timer);
                 this.isRunning = false;
                 this.state.time = 6 * 60;
+                this.state.dayCount = 0;
                 this.state.battAh = 100;
                 this.hourlyStats = { waterL: 0, energyInWh: 0, energyOutWh: 0 };
+                this.globalStats = { water: 0, energyIn: 0, energyOut: 0 };
+                this.history = { water: [0,0,0,0,0,0], energyIn: [0,0,0,0,0,0], energyOut: [0,0,0,0,0,0] };
                 this.lastHourAvgConsumptionW = 0;
                 this.initNodes();
                 this.updateUI(0); 
+                this.updateStatsUI(); // Reset Stats UI
                 document.getElementById('btn-toggle').innerHTML = '<i class="fa-solid fa-play"></i> Run';
                 document.getElementById('btn-toggle').classList.remove('stop');
                 this.clearLog(); 
@@ -490,7 +534,10 @@
 
             processOneMinute() {
                 this.state.time += 1;
-                if(this.state.time >= 24*60) this.state.time = 0; 
+                if(this.state.time >= 24*60) {
+                    this.state.time = 0; 
+                    this.state.dayCount++;
+                }
                 const hour = this.state.time / 60;
 
                 let irradiance = 0;
@@ -529,9 +576,17 @@
                 this.state.battAh = Math.max(0, Math.min(100, this.state.battAh - drainAh + chargeAh));
                 this.state.battV = 11.5 + (this.state.battAh/100)*1.8 + (this.state.solarW>0 ? 0.5 : 0);
 
+                // Stats Accumulation
+                const eIn = currentChargeW * (1/60);
+                const eOut = currentLoadW * (1/60);
+                
                 this.hourlyStats.waterL += this.state.pumpFlow; 
-                this.hourlyStats.energyInWh += currentChargeW * (1/60);
-                this.hourlyStats.energyOutWh += currentLoadW * (1/60);
+                this.hourlyStats.energyInWh += eIn;
+                this.hourlyStats.energyOutWh += eOut;
+
+                this.globalStats.water += this.state.pumpFlow;
+                this.globalStats.energyIn += eIn;
+                this.globalStats.energyOut += eOut;
 
                 if(this.state.time % 60 === 0) this.performHourlyAudit();
             }
@@ -541,7 +596,21 @@
                 const fmtTime = `${String(h === 0 ? 24 : h).padStart(2,'0')}:00`;
                 this.lastHourAvgConsumptionW = this.hourlyStats.energyOutWh;
                 this.logAudit(`[Hourly Audit ${fmtTime}] Water: ${this.hourlyStats.waterL.toFixed(2)} L | Gen: ${this.hourlyStats.energyInWh.toFixed(2)} Wh | Cons: ${this.hourlyStats.energyOutWh.toFixed(2)} Wh`);
+                
+                // Update History Arrays (Shift Left)
+                this.history.water.push(this.hourlyStats.waterL);
+                this.history.water.shift();
+                
+                this.history.energyIn.push(this.hourlyStats.energyInWh);
+                this.history.energyIn.shift();
+
+                this.history.energyOut.push(this.hourlyStats.energyOutWh);
+                this.history.energyOut.shift();
+
                 this.hourlyStats = { waterL: 0, energyInWh: 0, energyOutWh: 0 };
+                
+                // Trigger Stats UI Update (including Charts)
+                this.updateStatsUI();
             }
 
             calculateAutonomy() {
@@ -553,10 +622,68 @@
                 return `${hoursLeft.toFixed(1)} Hours`;
             }
 
+            // --- Stats & Sparkline Drawing ---
+            
+            getSparklinePath(data) {
+                if (!data || data.length === 0) return "";
+                const max = Math.max(...data, 1); // Avoid div by zero
+                const min = 0;
+                const width = 100;
+                const height = 100;
+                
+                // Generate points
+                let points = data.map((val, i) => {
+                    const x = (i / (data.length - 1)) * width;
+                    const y = height - ((val - min) / (max - min)) * height;
+                    return `${x},${y}`;
+                });
+
+                return points.join(" ");
+            }
+
+            getSparklineSVG(data) {
+                // Convert simple point list to SVG Path command
+                if (!data || data.length === 0) return { line: "", area: "" };
+                const max = Math.max(...data, 0.1);
+                const points = data.map((val, i) => {
+                    const x = (i / (data.length - 1)) * 100;
+                    const y = 100 - (val / max) * 80; // keep some padding at top (80% height)
+                    return {x, y};
+                });
+
+                let d = `M ${points[0].x} ${points[0].y}`;
+                for(let i=1; i<points.length; i++) {
+                    // Simple line smoothing or straight lines
+                    d += ` L ${points[i].x} ${points[i].y}`;
+                }
+
+                const areaD = `${d} L 100 100 L 0 100 Z`;
+                return { line: d, area: areaD };
+            }
+
+            updateStatsUI() {
+                // Update Global Texts
+                document.getElementById('stat-days').innerText = `${this.state.dayCount} Days`;
+                document.getElementById('stat-water').innerText = `${(this.globalStats.water).toFixed(1)} L`;
+                document.getElementById('stat-eng-out').innerText = `${(this.globalStats.energyOut).toFixed(1)} Wh`;
+                document.getElementById('stat-eng-in').innerText = `${(this.globalStats.energyIn).toFixed(1)} Wh`;
+
+                // Draw Charts
+                const draw = (idPrefix, data) => {
+                    const paths = this.getSparklineSVG(data);
+                    document.getElementById(`${idPrefix}-line`).setAttribute('d', paths.line);
+                    document.getElementById(`${idPrefix}-area`).setAttribute('d', paths.area);
+                };
+
+                draw('spark-water', this.history.water);
+                draw('spark-out', this.history.energyOut);
+                draw('spark-in', this.history.energyIn);
+            }
+
             updateUI(irradiance) {
                 const h = Math.floor(this.state.time / 60);
                 const m = this.state.time % 60;
-                const timeStr = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+                const timeStr = `Day ${this.state.dayCount} - ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
                 document.getElementById('sim-clock').innerText = timeStr;
                 
                 if (this.params.forceCloudy) {
@@ -570,13 +697,15 @@
                     document.getElementById('sun-icon').className = "fa-solid fa-moon";
                 }
 
-                const autonomyStr = this.calculateAutonomy();
-                document.getElementById('txt-solar').innerText = `${this.state.solarW.toFixed(1)} W | ${irradiance.toFixed(0)} W/m²`;
+                // document.getElementById('txt-solar').innerText = `${this.state.solarW.toFixed(1)} W | ${irradiance.toFixed(0)} W/m²`;
+                // Simplified Solar Display for tighter space
+                document.getElementById('txt-solar').innerText = `${this.state.solarW.toFixed(0)} W | ${irradiance.toFixed(0)} W/m²`;
+
                 document.getElementById('dot-solar').className = `status-dot ${this.state.solarW > 5 ? 'on' : ''}`;
-                document.getElementById('txt-batt').innerText = `${this.state.battAh.toFixed(1)}% | ${this.state.battV.toFixed(1)}V`;
+                document.getElementById('txt-batt').innerText = `${this.state.battAh.toFixed(1)}%`;
                 
                 const isPumping = this.state.activeValves > 0;
-                document.getElementById('txt-pump').innerText = isPumping ? `ON | ${this.state.pumpFlow.toFixed(2)} L/m` : "OFF";
+                document.getElementById('txt-pump').innerText = isPumping ? `ON | ${this.state.pumpFlow.toFixed(1)} L/m` : "OFF";
                 document.getElementById('dot-pump').className = `status-dot ${isPumping ? 'on' : ''}`;
                 
                 document.getElementById('active-nodes').innerText = `Active: ${this.state.activeValves}/36`;
